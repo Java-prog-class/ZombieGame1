@@ -1,6 +1,6 @@
 Roles:
 Player   - Josh L  
-Zombies  -
-Graphics -
+Zombies  - Emily B
+Graphics - Everyone
 Weapons  - Josh B
 Map      - Sam L
