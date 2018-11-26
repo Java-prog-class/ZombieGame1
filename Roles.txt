@@ -1,0 +1,5 @@
+Roles:
+Player  - Josh L  
+Zombies -
+Weapons - Josh B
+Map     - Sam L
