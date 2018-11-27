@@ -35,7 +35,7 @@ public class GUI extends JFrame {
 		int panSize=400;
 		
 		DrawPanel() {	
-			this.setBackground(Color.WHITE);			
+			this.setBackground(Color.BLACK);			
 			this.setPreferredSize(new Dimension(panSize, panSize));		
 		}
 		
