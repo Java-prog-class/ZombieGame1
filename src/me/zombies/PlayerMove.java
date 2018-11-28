@@ -9,12 +9,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class PlayerMove implements KeyListener {
+public class PlayerMove implements KeyListener, MouseListener{
 
 //Global Variables	
 	Color white = new Color (255, 255, 255);
@@ -25,11 +27,14 @@ public class PlayerMove implements KeyListener {
 	DrawingPanel drPanel = new DrawingPanel();
 	static JFrame window;
 	static PlayerStats Player = new PlayerStats("Josh");
+	static String direction = "Right";
 	
 	static boolean W = false, 
 				   A = false, 
 				   S = false,  
-				   D = false;
+				   D = false,
+				  M1 = false,
+				  M2 = false;
 	
 	Timer timer;
 	int tSpeed = 5;
@@ -66,7 +71,7 @@ public class PlayerMove implements KeyListener {
 			this.requestFocus();
 			
 			g.setColor(blue);
-			g.fillRect(PlayerStats.x, PlayerStats.y, 100, 100);
+			g.fillRect(Player.x, Player.y, 100, 100);
 		}
 	}
 	
@@ -74,10 +79,22 @@ public class PlayerMove implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if (e.getKeyCode()==KeyEvent.VK_W) W = true;
-		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
-		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
-		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
+		if (e.getKeyCode()==KeyEvent.VK_W) {
+			direction = "Up";
+			W = true;
+		}
+		if (e.getKeyCode()==KeyEvent.VK_A) {
+			direction = "Left";
+			A = true;
+		}
+		if (e.getKeyCode()==KeyEvent.VK_S) {
+			direction = "Down";
+			S = true;
+		}
+		if (e.getKeyCode()==KeyEvent.VK_D) {
+			direction = "Right";
+			D = true;	
+		}
 		
 	}
 	
@@ -96,17 +113,35 @@ public class PlayerMove implements KeyListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			if (W) Player.up();
-			if (A) Player.left();
-			if (S) Player.down();
-			if (D) Player.right();
+			if (W && Player.y>=0) Player.y-=Player.speed;
+			if (A && Player.x>=0) Player.x-=Player.speed;
+			if (S && Player.y<=WIN-100) Player.y+=Player.speed;
+			if (D && Player.x<=WIN-100) Player.x+=Player.speed;
 			
 			window.repaint();
 		}
+		
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+		if (e.getButton()==MouseEvent.BUTTON1) M1 = true;
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
 		
 	}
 
 
 //UNUSED METHOD
 	public void keyTyped(KeyEvent arg0) {}
+	public void mouseClicked(MouseEvent arg0) {}
+	public void mouseEntered(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent arg0) {}	
+
 }
