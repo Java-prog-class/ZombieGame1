@@ -26,6 +26,11 @@ public class PlayerMove implements KeyListener {
 	static JFrame window;
 	static PlayerStats Player = new PlayerStats("Josh");
 	
+	static boolean W = false, 
+				   A = false, 
+				   S = false,  
+				   D = false;
+	
 	Timer timer;
 	int tSpeed = 5;
 	
@@ -69,10 +74,21 @@ public class PlayerMove implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if (e.getKeyCode()==KeyEvent.VK_W) Player.up();
-		if (e.getKeyCode()==KeyEvent.VK_A) Player.left();
-		if (e.getKeyCode()==KeyEvent.VK_S) Player.down();
-		if (e.getKeyCode()==KeyEvent.VK_D) Player.right();		
+		if (e.getKeyCode()==KeyEvent.VK_W) W = true;
+		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
+		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
+		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
+		
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+		if (e.getKeyCode()==KeyEvent.VK_W) W = false;
+		if (e.getKeyCode()==KeyEvent.VK_A) A = false;
+		if (e.getKeyCode()==KeyEvent.VK_S) S = false;
+		if (e.getKeyCode()==KeyEvent.VK_D) D = false;	
+		
 	}
 	
 	private class TimerListener implements ActionListener {
@@ -80,6 +96,10 @@ public class PlayerMove implements KeyListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
+			if (W) Player.up();
+			if (A) Player.left();
+			if (S) Player.down();
+			if (D) Player.right();
 			
 			window.repaint();
 		}
@@ -87,7 +107,6 @@ public class PlayerMove implements KeyListener {
 	}
 
 
-//UNUSED METHODS
-	public void keyReleased(KeyEvent arg0) {}
+//UNUSED METHOD
 	public void keyTyped(KeyEvent arg0) {}
 }
