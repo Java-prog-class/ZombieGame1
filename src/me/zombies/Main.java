@@ -4,6 +4,8 @@ package me.zombies;
 import javax.swing.*;
 import java.awt.*;
 
+//Player Imports:
+
 //Map Imports:
 import maps.*;
 import props.*;
@@ -15,14 +17,14 @@ public class Main
 	DrawingPanel drPanel;
 	
 	//Window Width and Height:
-	final static int winX = 500;
-	final static int winY = 500;
+	final static int winX = 600;
+	final static int winY = 600;
 	
 	//Custom Colors:
-	static Color STREETCOLOUR = new Color(146, 146, 146);
+	Color grassColor = new Color(15, 80, 0);
 	
 	//Maps:
-	TestMap testMap = new TestMap();
+	ForestMapTest forestMapTest = new ForestMapTest();
 	
 	public static void main (String [] args)
 	{
@@ -34,10 +36,7 @@ public class Main
 		//JFrame Setup:
 		window = new JFrame("Zombie Game");
 		drPanel = new DrawingPanel();
-		testMap.addProps();
-		
-		System.out.println("Buildings: "+testMap.buildings.size());
-		System.out.println("Trees: "+testMap.trees.size());
+		forestMapTest.addProps();
 		
 		window.setSize(winX, winY);
 		window.setResizable(false);
@@ -53,21 +52,31 @@ public class Main
 	{
 		DrawingPanel()
 		{
-			this.setBackground(STREETCOLOUR);
+			this.setBackground(grassColor);
 		}
 		
 		public void paintComponent(Graphics g)
 		{
 			super.paintComponent(g);
 			
-			for (Building b : testMap.buildings)
+			for (Building b : forestMapTest.buildings)
 			{
 				b.paint(g);
 			}
 			
-			for (Tree t : testMap.trees)
+			for (Tree t : forestMapTest.trees)
 			{
 				t.paint(g);
+			}
+			
+			for (River r : forestMapTest.rivers)
+			{
+				r.paint(g);
+			}
+			
+			for (Bridge b : forestMapTest.bridges)
+			{
+				b.paint(g);
 			}
 		}
 	}

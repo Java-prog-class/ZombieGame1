@@ -1,20 +1,20 @@
 package props;
 import java.awt.*;
 
-public class Building 
+public class Bridge 
 {
-	//Coordinates of the Building:
+	//Coordinates of the Bridge:
 	int xCord;
 	int yCord;
 	
-	//Width and Height of the Building:
+	//Width and Height of the Bridge:
 	int bWidth;
 	int bHeight;
 	
-	//Colors of the Building's Roof:
-	Color Roof;
+	//Custom Color of the Bridge:
+	Color bridgeColor = new Color(145, 95, 25);
 	
-	public Building(int x, int y, int w, int h, Color c)
+	public Bridge(int x, int y, int w, int h)
 	{
 		xCord = x;
 		yCord = y;
@@ -22,13 +22,12 @@ public class Building
 		bWidth = w;
 		bHeight = h;
 		
-		Roof = c;
-		System.out.println("Building Created.");
+		System.out.println("Bridge Created.");
 	}
 	
 	public void paint(Graphics g)
 	{
-		g.setColor(Roof);
+		g.setColor(bridgeColor);
 		g.fillRect(xCord, yCord, bWidth, bHeight);
 		g.setColor(Color.BLACK);
 		g.drawRect(xCord, yCord, bWidth, bHeight);
