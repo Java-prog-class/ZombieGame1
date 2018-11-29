@@ -19,10 +19,10 @@ class PlayerStats {
 		this.alive = true;
 		this.name = name;
 		this.maxHP = 20;
-		this.HP = 12;
+		this.HP = 20;
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
-		this.speed = 2;
+		this.speed = 5;
 		this.armor = "None";
 		this.weapon = "Fist";
 	}

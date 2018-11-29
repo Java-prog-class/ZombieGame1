@@ -1,7 +1,9 @@
 package me.zombies;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.BasicStroke;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,10 +21,11 @@ import javax.swing.Timer;
 public class PlayerMove implements KeyListener, MouseListener{
 
 //Global Variables	
-	Color white = new Color (255, 255, 255);
-	Color blue = new Color (0, 0, 255);
-	Color red = new Color (255, 0, 0);
-	Color black = new Color (0, 0, 0);
+	Color White = new Color (255, 255, 255);
+	Color Blue = new Color (0, 0, 255);
+	Color Red = new Color (255, 0, 0);
+	Color Black = new Color (0, 0, 0);
+	Font HPBar = new Font("Arial", Font.PLAIN, 45);
 	BasicStroke stroke = new BasicStroke(5);
 	
 	final static int WIN = 1500;
@@ -63,7 +65,7 @@ public class PlayerMove implements KeyListener, MouseListener{
 		
 		DrawingPanel(){
 			this.setPreferredSize(new Dimension (WIN, WIN));
-			this.setBackground(white);
+			this.setBackground(White);
 		}
 		
 		@Override
@@ -75,19 +77,25 @@ public class PlayerMove implements KeyListener, MouseListener{
 			this.requestFocus();
 			
 		//Draw the Player
-			g.setColor(blue);
+			g.setColor(Blue);
 			g.fillRect(Player.x, Player.y, 100, 100);
 			
 		//Draw the Health Bar
 			g2.setStroke(stroke);
-			
 			int HPBarWidth = (int) (Player.PercentHP*500);
 			
-			g.setColor(red);
+			g.setColor(White);				// <---- White Background
+			g.fillRect(50, 50, 500, 50);
+			
+			g.setColor(Red);				// <---- Red Meter
 			g.fillRect(50, 50, HPBarWidth, 50);
 			
-			g.setColor(black);
+			g.setColor(Black);				// <---- Black Boarder
 			g.drawRect(50, 50, 500, 50);
+			
+			g2.setFont(HPBar);
+			String HPString = Player.HP+"/"+Player.maxHP;
+			g.drawString(HPString, 430, 95);
 		}
 	}
 	
