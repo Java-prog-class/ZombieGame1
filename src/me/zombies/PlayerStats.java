@@ -10,10 +10,8 @@ class PlayerStats {
 	
 	String armor, weapon, name;
 	
-	int HP, maxHP;
-	double PercentRatio;
-	double PercentHP;
-	int speed;
+	int HP, maxHP, speed;
+	double PercentRatio, PercentHP, angle;
 	
 	PlayerStats(String name){
 		this.alive = true;
@@ -22,6 +20,7 @@ class PlayerStats {
 		this.HP = 20;
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
+		this.angle = 0.0;
 		this.speed = 5;
 		this.armor = "None";
 		this.weapon = "Fist";

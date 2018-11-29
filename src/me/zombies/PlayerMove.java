@@ -13,7 +13,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -31,9 +35,12 @@ public class PlayerMove implements KeyListener, MouseListener{
 	final static int WIN = 1500;
 	DrawingPanel drPanel = new DrawingPanel();
 	static JFrame window;
+	
 	static PlayerStats Player = new PlayerStats("Josh");
-
-	static String direction = "Right";
+	static double UP =   0.0,
+			    LEFT = 270.0,
+			    DOWN = 180.0,
+			   RIGHT =  90.0;
 	
 	static boolean W = false, 
 				   A = false, 
@@ -51,7 +58,7 @@ public class PlayerMove implements KeyListener, MouseListener{
 	
 		window = new JFrame("Player");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setResizable(false);	
+		window.setResizable(false);
 		drPanel.addKeyListener(this);
 		window.add(drPanel); 
 		window.pack();	
@@ -77,8 +84,17 @@ public class PlayerMove implements KeyListener, MouseListener{
 			this.requestFocus();
 			
 		//Draw the Player
-			g.setColor(Blue);
-			g.fillRect(Player.x, Player.y, 100, 100);
+			BufferedImage img = null;
+			try {
+			    img = ImageIO.read(new File("Player.png"));
+			} catch (IOException e) {}
+			
+			g2.rotate(Math.toRadians(Player.angle), Player.x+38, Player.y+50);
+			
+			g.drawImage(img, Player.x, Player.y, 76, 100, drPanel);
+			
+			g2.rotate(Math.toRadians(-Player.angle), Player.x+38, Player.y+50);
+			
 			
 		//Draw the Health Bar
 			g2.setStroke(stroke);
@@ -104,19 +120,22 @@ public class PlayerMove implements KeyListener, MouseListener{
 	public void keyPressed(KeyEvent e) {
 		
 		if (e.getKeyCode()==KeyEvent.VK_W) {
-			direction = "Up";
+			Player.angle = UP;
 			W = true;
 		}
+		
 		if (e.getKeyCode()==KeyEvent.VK_A) {
-			direction = "Left";
+			Player.angle = LEFT;
 			A = true;
 		}
+		
 		if (e.getKeyCode()==KeyEvent.VK_S) {
-			direction = "Down";
+			Player.angle = DOWN;
 			S = true;
 		}
+		
 		if (e.getKeyCode()==KeyEvent.VK_D) {
-			direction = "Right";
+			Player.angle = RIGHT;
 			D = true;	
 		}
 		
