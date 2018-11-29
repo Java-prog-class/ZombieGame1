@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.BasicStroke;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,11 +23,14 @@ public class PlayerMove implements KeyListener, MouseListener{
 	Color white = new Color (255, 255, 255);
 	Color blue = new Color (0, 0, 255);
 	Color red = new Color (255, 0, 0);
+	Color black = new Color (0, 0, 0);
+	BasicStroke stroke = new BasicStroke(5);
 	
 	final static int WIN = 1500;
 	DrawingPanel drPanel = new DrawingPanel();
 	static JFrame window;
 	static PlayerStats Player = new PlayerStats("Josh");
+
 	static String direction = "Right";
 	
 	static boolean W = false, 
@@ -37,7 +41,7 @@ public class PlayerMove implements KeyListener, MouseListener{
 				  M2 = false;
 	
 	Timer timer;
-	int tSpeed = 5;
+	int tSpeed = 1;
 	
 	public static void main(String[] args) {new PlayerMove();}
 	
@@ -70,8 +74,20 @@ public class PlayerMove implements KeyListener, MouseListener{
 			super.paintComponent(g);
 			this.requestFocus();
 			
+		//Draw the Player
 			g.setColor(blue);
 			g.fillRect(Player.x, Player.y, 100, 100);
+			
+		//Draw the Health Bar
+			g2.setStroke(stroke);
+			
+			int HPBarWidth = (int) (Player.PercentHP*500);
+			
+			g.setColor(red);
+			g.fillRect(50, 50, HPBarWidth, 50);
+			
+			g.setColor(black);
+			g.drawRect(50, 50, 500, 50);
 		}
 	}
 	
@@ -109,14 +125,19 @@ public class PlayerMove implements KeyListener, MouseListener{
 	}
 	
 	private class TimerListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
+	// ----- Stuff that happens every frame of the game -----
+			
+		//Movement	
 			if (W && Player.y>=0) Player.y-=Player.speed;
 			if (A && Player.x>=0) Player.x-=Player.speed;
 			if (S && Player.y<=WIN-100) Player.y+=Player.speed;
 			if (D && Player.x<=WIN-100) Player.x+=Player.speed;
+			
+		//Death check
+			if (Player.HP<=0) Player.alive = false;
 			
 			window.repaint();
 		}
