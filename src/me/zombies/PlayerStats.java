@@ -3,8 +3,11 @@ package me.zombies;
 class PlayerStats {
 	
 //Variables
-	int x = PlayerMove.WIN/2;
-	int y = PlayerMove.WIN/2;
+	int x = Main.WIN/2;
+	int y = Main.WIN/2;
+	
+	int width = Main.WIN/20;
+	int height = Main.WIN/15;
 	
 	boolean alive;
 	
@@ -21,7 +24,7 @@ class PlayerStats {
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
 		this.angle = 0.0;
-		this.speed = 5;
+		this.speed = Main.WIN/300;
 		this.armor = "None";
 		this.weapon = "Fist";
 	}
