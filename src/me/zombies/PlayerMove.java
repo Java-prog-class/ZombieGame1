@@ -38,10 +38,6 @@ public class PlayerMove implements KeyListener, MouseListener, MouseMotionListen
 	static JFrame window;
 	
 	static PlayerStats Player = new PlayerStats("Josh");
-	static double UP =   0.0,
-			    LEFT = 270.0,
-			    DOWN = 180.0,
-			   RIGHT =  90.0;
 	
 	static int mouseX;
 	static int mouseY;
