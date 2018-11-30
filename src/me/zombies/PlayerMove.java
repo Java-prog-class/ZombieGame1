@@ -153,9 +153,7 @@ public class PlayerMove implements KeyListener, MouseListener, MouseMotionListen
 		//Rotation
 			int deltaX = mouseX-Player.x;
 			int deltaY = mouseY-Player.y;
-			
-			Player.angle = Math.toDegrees(Math.atan2(deltaX, deltaY));
-			System.out.println(Player.angle);
+			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY));
 			
 		//Death check
 			if (Player.HP<=0) Player.alive = false;
