@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class PlayerMove implements KeyListener, MouseListener{
+public class PlayerMove implements KeyListener, MouseListener, MouseMotionListener{
 
 //Global Variables	
 	Color White = new Color (255, 255, 255);
@@ -42,6 +43,9 @@ public class PlayerMove implements KeyListener, MouseListener{
 			    DOWN = 180.0,
 			   RIGHT =  90.0;
 	
+	static int mouseX;
+	static int mouseY;
+	
 	static boolean W = false, 
 				   A = false, 
 				   S = false,  
@@ -60,6 +64,7 @@ public class PlayerMove implements KeyListener, MouseListener{
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		drPanel.addKeyListener(this);
+		drPanel.addMouseMotionListener(this);
 		window.add(drPanel); 
 		window.pack();	
 		window.setVisible(true);
@@ -85,14 +90,11 @@ public class PlayerMove implements KeyListener, MouseListener{
 			
 		//Draw the Player
 			BufferedImage img = null;
-			try {
-			    img = ImageIO.read(new File("Player.png"));
+			try { img = ImageIO.read(new File("Player.png"));
 			} catch (IOException e) {}
-			
-			g2.rotate(Math.toRadians(Player.angle), Player.x+38, Player.y+50);
-			
+	
+			g2.rotate(Math.toRadians(Player.angle), Player.x+38, Player.y+50);		
 			g.drawImage(img, Player.x, Player.y, 76, 100, drPanel);
-			
 			g2.rotate(Math.toRadians(-Player.angle), Player.x+38, Player.y+50);
 			
 			
@@ -100,13 +102,13 @@ public class PlayerMove implements KeyListener, MouseListener{
 			g2.setStroke(stroke);
 			int HPBarWidth = (int) (Player.PercentHP*500);
 			
-			g.setColor(White);				// <---- White Background
+			g.setColor(White);					// <---- White Background
 			g.fillRect(50, 50, 500, 50);
 			
-			g.setColor(Red);				// <---- Red Meter
+			g.setColor(Red);					// <---- Red Meter
 			g.fillRect(50, 50, HPBarWidth, 50);
 			
-			g.setColor(Black);				// <---- Black Boarder
+			g.setColor(Black);					// <---- Black Boarder
 			g.drawRect(50, 50, 500, 50);
 			
 			g2.setFont(HPBar);
@@ -119,25 +121,10 @@ public class PlayerMove implements KeyListener, MouseListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if (e.getKeyCode()==KeyEvent.VK_W) {
-			Player.angle = UP;
-			W = true;
-		}
-		
-		if (e.getKeyCode()==KeyEvent.VK_A) {
-			Player.angle = LEFT;
-			A = true;
-		}
-		
-		if (e.getKeyCode()==KeyEvent.VK_S) {
-			Player.angle = DOWN;
-			S = true;
-		}
-		
-		if (e.getKeyCode()==KeyEvent.VK_D) {
-			Player.angle = RIGHT;
-			D = true;	
-		}
+		if (e.getKeyCode()==KeyEvent.VK_W) W = true;
+		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
+		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
+		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
 		
 	}
 	
@@ -163,6 +150,13 @@ public class PlayerMove implements KeyListener, MouseListener{
 			if (S && Player.y<=WIN-100) Player.y+=Player.speed;
 			if (D && Player.x<=WIN-100) Player.x+=Player.speed;
 			
+		//Rotation
+			int deltaX = mouseX-Player.x;
+			int deltaY = mouseY-Player.y;
+			
+			Player.angle = Math.toDegrees(Math.atan2(deltaX, deltaY));
+			System.out.println(Player.angle);
+			
 		//Death check
 			if (Player.HP<=0) Player.alive = false;
 			
@@ -185,11 +179,18 @@ public class PlayerMove implements KeyListener, MouseListener{
 		
 	}
 
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+		
+	}
 
 //UNUSED METHOD
 	public void keyTyped(KeyEvent arg0) {}
 	public void mouseClicked(MouseEvent arg0) {}
 	public void mouseEntered(MouseEvent arg0) {}
-	public void mouseExited(MouseEvent arg0) {}	
-
+	public void mouseExited(MouseEvent arg0) {}
+	public void mouseDragged(MouseEvent arg0) {}
+	
 }
