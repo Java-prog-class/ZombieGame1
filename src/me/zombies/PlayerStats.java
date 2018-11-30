@@ -2,48 +2,27 @@ package me.zombies;
 
 class PlayerStats {
 	
-//Static Variables
-	static boolean alive = true;
-	static int x = 100;
-	static int y = 100;
+//Variables
+	int x = PlayerMove.WIN/2;
+	int y = PlayerMove.WIN/2;
 	
-//Instance varaibles
-	private String name;
-	private int HP;
-	private int maxHP;
-	private int speed;
+	boolean alive;
 	
+	String armor, weapon, name;
 	
+	int HP, maxHP, speed;
+	double PercentRatio, PercentHP, angle;
 	
 	PlayerStats(String name){
+		this.alive = true;
 		this.name = name;
 		this.maxHP = 20;
 		this.HP = 20;
-		this.speed = 50;
-		
-	}
-	
-	void up() {
-		if (y<0) y = 0;
-		else y-=speed;
-		PlayerMove.window.repaint();
-	}
-	
-	void down() {
-		if (y>PlayerMove.WIN) y = PlayerMove.WIN;
-		else y+=speed;
-		PlayerMove.window.repaint();
-	}
-	
-	void left() {
-		if (x<0) x = 0;
-		else x-=speed;
-		PlayerMove.window.repaint();
-	}
-	
-	void right() {
-		if (x>PlayerMove.WIN) x = PlayerMove.WIN;
-		else x+=speed;
-		PlayerMove.window.repaint();
+		this.PercentRatio = ((this.HP*100)/this.maxHP);
+		this.PercentHP = PercentRatio/100;
+		this.angle = 0.0;
+		this.speed = 5;
+		this.armor = "None";
+		this.weapon = "Fist";
 	}
 }
