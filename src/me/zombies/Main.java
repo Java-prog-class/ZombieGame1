@@ -1,5 +1,6 @@
 package me.zombies;
-import java.awt.BasicStroke;
+
+import java.awt.BasicStroke;		// <---- Imports	
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -60,6 +62,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// <---- Allows for closing
 		window.setResizable(false);								// <---- Turns of resizing
 		drPanel.addKeyListener(this);							// <---- Adds the keyboard listener to the drPanel
+		drPanel.addMouseListener(this);							// <---- Adds the mouse listener to the drPanel
 		drPanel.addMouseMotionListener(this);					// <---- Adds the mouse motion listener to the drPanel
 		window.add(drPanel);									// <---- Adds the drPanel to the Window
 		window.pack();											// <---- Packs the Window
