@@ -38,6 +38,13 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	BasicStroke stroke = new BasicStroke(WIN/300);
 	
+//Constants for Zombie Types
+	
+	int GreenZombie = 1;
+	int BlueZombie = 2;
+	int RedZombie = 3;
+	int GoldZombie = 4;
+	
 //Global Variables
 	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
 	
