@@ -154,7 +154,7 @@ public class PlayerMove implements KeyListener, MouseListener, MouseMotionListen
 			int deltaX = mouseX-Player.x;
 			int deltaY = mouseY-Player.y;
 			
-			Player.angle = Math.toDegrees(Math.atan2(deltaX, deltaY));
+			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY));
 			System.out.println(Player.angle);
 			
 		//Death check
