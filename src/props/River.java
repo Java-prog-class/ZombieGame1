@@ -11,6 +11,9 @@ public class River
 	int rWidth;
 	int rHeight;
 	
+	//Color of the River:
+	Color riverColor = new Color(0, 20, 210);
+	
 	public River(int x, int y, int w, int h)
 	{
 		xCord = x;
@@ -24,7 +27,7 @@ public class River
 	
 	public void paint(Graphics g)
 	{
-		g.setColor(Color.BLUE);
+		g.setColor(riverColor);
 		g.fillRect(xCord, yCord, rWidth, rHeight);
 	}
 }
