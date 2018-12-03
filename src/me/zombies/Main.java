@@ -24,14 +24,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Main implements KeyListener, MouseListener, MouseMotionListener{
-	
-//JFrame and JWindow Creations
-	final static int WIN = 1500;
+
+	//JFrame and JWindow Creations
+	final static int WIN = 650;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
-	
-	
-//Colors, Font, and Stroke 
+
+
+	//Colors, Font, and Stroke 
 	Color White = new Color (255, 255, 255);
 	Color Blue = new Color (0, 0, 255);
 	Color Red = new Color (255, 0, 0);
@@ -55,21 +55,21 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	
 	static int mouseX;	// <---- Mouse Variables
 	static int mouseY;
-	
+
 	static boolean W = false,	// <---- Input variables for the player.
-			       A = false,	//		 These variables are set to false,
-			       S = false,	//       when the key is pressed or mouse
-			       D = false,	//		 button is clicked, the corresponding
-			      M1 = false,	//		 variable is set to true
-			      M2 = false;
-	
+			A = false,	//		 These variables are set to false,
+			S = false,	//       when the key is pressed or mouse
+			D = false,	//		 button is clicked, the corresponding
+			M1 = false,	//		 variable is set to true
+			M2 = false;
+
 	Timer timer;	// <---- Initializes the Timer
 	int tSpeed = 1;	// <---- The Timer's Speed
-	
+
 	public static void main (String [] args) {new Main();}
-	
+
 	Main() {
-	//JFrame Setup:
+		//JFrame Setup:
 		window = new JFrame("Zombie Game");						// <---- Sets the titles
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// <---- Allows for closing
 		window.setResizable(false);								// <---- Turns of resizing
@@ -79,23 +79,23 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		window.add(drPanel);									// <---- Adds the drPanel to the Window
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
-	
+
 		timer = new Timer(tSpeed, new TimerListener());			// <---- Creates the Timer
 		timer.start();											// <---- Starts the Timer
 	}
-	
+
 	@SuppressWarnings("serial")
 	private class DrawingPanel extends JPanel {
 		DrawingPanel() {
 			this.setPreferredSize(new Dimension (WIN, WIN));	// <---- Sets the Size
 			this.setBackground(White);							// <---- Sets the background color
 		}
-		
+
 		@Override
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;	
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			
+
 			super.paintComponent(g);
 			g2.setStroke(stroke);
 			this.requestFocus();
@@ -111,6 +111,15 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			
 		}		
 
+			//Draw the bullet
+			if(fire>0) {
+				g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
+				g.fillRect(Player.x+14,Player.y, 5, 5);	// <---- Draws the Bullet
+				g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
+			}
+		}
+
+			
 	}
 	
 //Draw the Player
@@ -178,8 +187,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
-			
-		//Death check
+
+			//Death check
 			if (Player.HP<=0) Player.alive = false;
 			
 		//Zombies Round Check
@@ -213,30 +222,35 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
-		if (e.getButton()==MouseEvent.BUTTON1) M1 = true;
-		
+		M1 = true;
+		fire++;
+		System.out.println("yes");
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
-		
+
 	}
 
-//UNUSED METHOD
+	//UNUSED METHOD
 	public void keyTyped(KeyEvent arg0) {}
-	public void mouseClicked(MouseEvent arg0) {}
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseDragged(MouseEvent arg0) {}
-	
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
