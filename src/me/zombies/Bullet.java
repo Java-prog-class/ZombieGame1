@@ -4,49 +4,36 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import unit2.LoadingIcon;
+
 
 public class Bullet {
 	double cx,cy;//Centre Coordinates
 	int x,y;	//int versions;
-	int r = 25;
+	int r = 2;
 	double vx,vy,vx2,vy2;//Speeds
 	
-	int red = (int)(Math.random()*250);
-	int green = (int)(Math.random()*250);
-	int blue = (int)(Math.random()*250);
-
+	int deltaX = Main.mouseX-Main.Player.x; 									// <---- Subtracting the Player location from the Mouse Location
+	int deltaY = Main.mouseY-Main.Player.y;
+	int angle = (int) Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
+	
 	Bullet(){
-	
-		cx = Main.Player.x+14;
-		cy= Main.Player.y;
-		
-		vx = -8.0;
-		vy = -0.0;
+		cx = angle;
+		cy= angle;
+
+		vx = -100.0;
+		vy = -100.0;
 	}
 
-	void paint(Graphics g) {		
-		g.setColor(Black);
-		g.fillOval(x-r, y-r, r*2, r*2);		
-	}
-	
 	void move() {
-		this.cy += this.vy;
-		this.vy += LoadingIcon.g2;
-		
+		this.cx += 1;
+		this.cy += 1;
+
 		x = (int) cx;
 		y = (int) cy;
 	}
-	
-	boolean intersects(Rectangle rect, Rectangle rect2, Rectangle rect3) {
-		if (rect.contains(cx, cy-r)) return true;
-		if (rect.contains(cx, cy+r)) return true;
-		if (rect2.contains(cx, cy-r)) return true;
-		if (rect2.contains(cx, cy+r)) return true;
-		if (rect3.contains(cx, cy-r)) return true;
-		if (rect3.contains(cx, cy+r)) return true;
-		
-		
-		return false;
+
+	void paint(Graphics g) {		
+		g.setColor(Color.black);
+		g.fillOval(x-r, y-r, r*2, r*2);		
 	}
 }

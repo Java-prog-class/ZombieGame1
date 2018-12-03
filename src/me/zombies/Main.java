@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+
+
 public class Main implements KeyListener, MouseListener, MouseMotionListener{
 
 	//JFrame and JWindow Creations
@@ -38,21 +40,24 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	Color Black = new Color (0, 0, 0);
 	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	BasicStroke stroke = new BasicStroke(WIN/300);
-	
-//Constants for Zombie Types
-	
+
+//Varibles for shooting
+	//Array list for bullets
+	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+
+	//Constants for Zombie Types
 	int GreenZombie = 1;
 	int BlueZombie =  2;
 	int RedZombie =   3;
 	int GoldZombie =  4;
-	
-//Global Variables
+
+	//Global Variables
 	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
-	
+
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
 	static String Round = "Start";
 	Zombies z;
-	
+
 	static int mouseX;	// <---- Mouse Variables
 	static int mouseY;
 
@@ -82,6 +87,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 
 		timer = new Timer(tSpeed, new TimerListener());			// <---- Creates the Timer
 		timer.start();											// <---- Starts the Timer
+
 	}
 
 	@SuppressWarnings("serial")
@@ -99,32 +105,22 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			super.paintComponent(g);
 			g2.setStroke(stroke);
 			this.requestFocus();
-		
+
 			drawPlayer(g, g2);
-		
+
 			drawPlayerHealthBar(g, g2);
-			
-		//Draw Zombies
+
+			//Draw Zombies
 			for (Zombies z: zombies) {
 				z.paint(g);
 			}
-			
 		}		
-
-			//Draw the bullet
-			if(fire>0) {
-				g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
-				g.fillRect(Player.x+14,Player.y, 5, 5);	// <---- Draws the Bullet
-				g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
-			}
-		}
-
-			
 	}
-	
-//Draw the Player
+
+
+	//Draw the Player
 	void drawPlayer(Graphics g, Graphics2D g2) {
-		
+
 		BufferedImage img = null;
 		try { img = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
 		} catch (IOException e) {}
@@ -132,99 +128,132 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
 		g.drawImage(img, Player.x, Player.y,Player.width, Player.height, drPanel);							// <---- Draws the Player
 		g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
-	
+
 	}
-	
-//Draw the Health Bar
+
+	//Draw the Health Bar
 	void drawPlayerHealthBar(Graphics g, Graphics2D g2) {
-		
+
 		int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
 		int BarHeight = WIN/30;
-		
+
 		g.setColor(White);										// <---- White Background
 		g.fillRect(BarHeight, BarHeight, BarWidth, BarHeight);
-		
+
 		g.setColor(Red);										// <---- Red Health Meter
 		int HPBarWidth = (int) (Player.PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Precentage
 		g.fillRect(BarHeight, BarHeight, HPBarWidth, BarHeight);
-		
+
 		g.setColor(Black);										// <---- Black Boarder
 		g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);
-		
+
 		g2.setFont(HPBar);										// <---- Display Text of HP
 		String HPString = Player.HP+"/"+Player.maxHP;
 		g.drawString(HPString, (int)(WIN/3.6), WIN/16);
-	
-	}
-
-//Add Zombies
-	void addZombies() {
 		
+		for(Bullet c : bullets) {
+			c.paint(g);
+		}
+	}
+	
+	//Draw Bullets
+//	void addBullets(Graphics g) {
+//		for(Bullet c : bullets) {
+//			c.paint(g);
+//		}
+//	}
+
+	//Add Zombies
+	void addZombies() {
+
 		for (int i=0; i<25; i++) {
 			zombies.add( new Zombies(GreenZombie));
 		}
-		
-		
+
+
 		Round = "End";
 	}
-	
-//Timer Listener
+
+	//Timer Listener
 	private class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		
-	// ------------------------------------------------------
-	// ----- Stuff that happens every frame of the game -----
-	// ------------------------------------------------------	
-			
-		//Movement	
+
+			// ------------------------------------------------------
+			// ----- Stuff that happens every frame of the game -----
+			// ------------------------------------------------------	
+				
+			//Movement	
 			if (W && Player.y>=0) Player.y-=Player.speed;					// <---- Moving Up
 			if (A && Player.x>=0) Player.x-=Player.speed;					// <---- Moving Left
 			if (S && Player.y<=WIN-Player.height) Player.y+=Player.speed;	// <---- Moving Down
 			if (D && Player.x<=WIN-Player.height) Player.x+=Player.speed;	// <---- Moving Right
-			
-		//Rotation of Player
+
+			//Rotation of Player
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
 
 			//Death check
 			if (Player.HP<=0) Player.alive = false;
-			
-		//Zombies Round Check
+
+			//Zombies Round Check
 			if (Round.equals("Start")) addZombies();
 			
+			
+			if(bullets.size()>0) {
+				moveBullets();
+			}
 			window.repaint();
 		}
-		
+
 	}	
 
-//Player Inputs
+	//Move Bullets
+	private void moveBullets() {
+		//move
+		for (Bullet b : bullets) {
+			b.move();
+		}
+
+		//remove circles when they're off the screen		
+		for (int i = 0; i < bullets.size(); i++) {
+			Bullet b = bullets.get(i);	
+			if (b.x > WIN) {
+				bullets.remove(i);
+				i--;	//  Important! Add this in.
+			}
+		}	
+	}
+
+	//Player Inputs
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
 		if (e.getKeyCode()==KeyEvent.VK_W) W = true;
 		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
 		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
-		
+
 	}
-	
+
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+
 		if (e.getKeyCode()==KeyEvent.VK_W) W = false;
 		if (e.getKeyCode()==KeyEvent.VK_A) A = false;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = false;
 		if (e.getKeyCode()==KeyEvent.VK_D) D = false;	
-		
+
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		M1 = true;
-		fire++;
 		System.out.println("yes");
+		System.out.println("good");
+		bullets.add(new Bullet());
+		moveBullets();
 	}
 
 	@Override
