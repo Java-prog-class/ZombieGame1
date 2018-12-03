@@ -96,34 +96,46 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			this.requestFocus();
 			
 		//Draw the Player
-			BufferedImage img = null;
-			try { img = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
-			} catch (IOException e) {}
-	
-			g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
-			g.drawImage(img, Player.x, Player.y,Player.width, Player.height, drPanel);							// <---- Draws the Player
-			g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
-			
+			drawPlayer(g, g2);
 			
 		//Draw the Health Bar
-			int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
-			int BarHeight = WIN/30;
+			drawPlayerHealthBar(g, g2);
 			
-			g.setColor(White);										// <---- White Background
-			g.fillRect(BarHeight, BarHeight, BarWidth, BarHeight);
-			
-			g.setColor(Red);										// <---- Red Health Meter
-			int HPBarWidth = (int) (Player.PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Precentage
-			g.fillRect(BarHeight, BarHeight, HPBarWidth, BarHeight);
-			
-			g.setColor(Black);										// <---- Black Boarder
-			g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);
-			
-			g2.setFont(HPBar);										// <---- Display Text of HP
-			String HPString = Player.HP+"/"+Player.maxHP;
-			g.drawString(HPString, (int)(WIN/3.6), WIN/16);
 		}		
 
+	}
+	
+	void drawPlayer(Graphics g, Graphics2D g2) {
+		
+		BufferedImage img = null;
+		try { img = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
+		} catch (IOException e) {}
+
+		g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
+		g.drawImage(img, Player.x, Player.y,Player.width, Player.height, drPanel);							// <---- Draws the Player
+		g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
+	
+	}
+	
+	void drawPlayerHealthBar(Graphics g, Graphics2D g2) {
+		
+		int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
+		int BarHeight = WIN/30;
+		
+		g.setColor(White);										// <---- White Background
+		g.fillRect(BarHeight, BarHeight, BarWidth, BarHeight);
+		
+		g.setColor(Red);										// <---- Red Health Meter
+		int HPBarWidth = (int) (Player.PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Precentage
+		g.fillRect(BarHeight, BarHeight, HPBarWidth, BarHeight);
+		
+		g.setColor(Black);										// <---- Black Boarder
+		g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);
+		
+		g2.setFont(HPBar);										// <---- Display Text of HP
+		String HPString = Player.HP+"/"+Player.maxHP;
+		g.drawString(HPString, (int)(WIN/3.6), WIN/16);
+	
 	}
 	
 	@Override
