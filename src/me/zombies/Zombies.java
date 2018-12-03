@@ -1,5 +1,8 @@
 package me.zombies;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 class Zombies {
 
 	int Green = 1;
@@ -18,6 +21,10 @@ class Zombies {
 	double PercentRatio, PercentHP, angle;
 	
 	Zombies(int type){
+		
+	//TODO: Create Zombie Behaviour Here
+		
+		
 
 	// Creating GREEN Zombies
 		if (type==Green) {					
@@ -58,6 +65,11 @@ class Zombies {
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
 		
+	}
+	
+	void paint(Graphics g) {
+		g.setColor(Color.GREEN);
+		g.fillOval(x, y, 50, 50);
 	}
 	
 	

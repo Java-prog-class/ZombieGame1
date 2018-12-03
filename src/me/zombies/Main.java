@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -41,12 +42,16 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 //Constants for Zombie Types
 	
 	int GreenZombie = 1;
-	int BlueZombie = 2;
-	int RedZombie = 3;
-	int GoldZombie = 4;
+	int BlueZombie =  2;
+	int RedZombie =   3;
+	int GoldZombie =  4;
 	
 //Global Variables
 	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
+	
+	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
+	static String Round = "Start";
+	Zombies z;
 	
 	static int mouseX;	// <---- Mouse Variables
 	static int mouseY;
@@ -94,17 +99,21 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			super.paintComponent(g);
 			g2.setStroke(stroke);
 			this.requestFocus();
-			
-		//Draw the Player
+		
 			drawPlayer(g, g2);
-			
-		//Draw the Health Bar
+		
 			drawPlayerHealthBar(g, g2);
+			
+		//Draw Zombies
+			for (Zombies z: zombies) {
+				z.paint(g);
+			}
 			
 		}		
 
 	}
 	
+//Draw the Player
 	void drawPlayer(Graphics g, Graphics2D g2) {
 		
 		BufferedImage img = null;
@@ -117,6 +126,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	
 	}
 	
+//Draw the Health Bar
 	void drawPlayerHealthBar(Graphics g, Graphics2D g2) {
 		
 		int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
@@ -137,7 +147,50 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		g.drawString(HPString, (int)(WIN/3.6), WIN/16);
 	
 	}
+
+//Add Zombies
+	void addZombies() {
+		
+		for (int i=0; i<25; i++) {
+			zombies.add( new Zombies(GreenZombie));
+		}
+		
+		
+		Round = "End";
+	}
 	
+//Timer Listener
+	private class TimerListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		
+	// ------------------------------------------------------
+	// ----- Stuff that happens every frame of the game -----
+	// ------------------------------------------------------	
+			
+		//Movement	
+			if (W && Player.y>=0) Player.y-=Player.speed;					// <---- Moving Up
+			if (A && Player.x>=0) Player.x-=Player.speed;					// <---- Moving Left
+			if (S && Player.y<=WIN-Player.height) Player.y+=Player.speed;	// <---- Moving Down
+			if (D && Player.x<=WIN-Player.height) Player.x+=Player.speed;	// <---- Moving Right
+			
+		//Rotation of Player
+			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
+			int deltaY = mouseY-Player.y;
+			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
+			
+		//Death check
+			if (Player.HP<=0) Player.alive = false;
+			
+		//Zombies Round Check
+			if (Round.equals("Start")) addZombies();
+			
+			window.repaint();
+		}
+		
+	}	
+
+//Player Inputs
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
@@ -155,31 +208,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		if (e.getKeyCode()==KeyEvent.VK_A) A = false;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = false;
 		if (e.getKeyCode()==KeyEvent.VK_D) D = false;	
-		
-	}
-	
-	private class TimerListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-	// ----- Stuff that happens every frame of the game -----
-			
-		//Movement	
-			if (W && Player.y>=0) Player.y-=Player.speed;					// <---- Moving Up
-			if (A && Player.x>=0) Player.x-=Player.speed;					// <---- Moving Left
-			if (S && Player.y<=WIN-Player.height) Player.y+=Player.speed;	// <---- Moving Down
-			if (D && Player.x<=WIN-Player.height) Player.x+=Player.speed;	// <---- Moving Right
-			
-		//Rotation
-			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
-			int deltaY = mouseY-Player.y;
-			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
-			
-		//Death check
-			if (Player.HP<=0) Player.alive = false;
-			
-			window.repaint();
-		}
 		
 	}
 	
