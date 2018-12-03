@@ -1,54 +1,54 @@
 Round-Based Zombie Game
+_______________________________________________________________
 
 
+	----------					----------
+	Round  1:					Round  2:
+	----------					----------
 
-----------					----------
-Round  1:					Round  2:
-----------					----------
-
-Green Zombies: 50			Green Zombies:
-Blue  Zombies:  0			Blue  Zombies:
-Red   Zombies:  0			Red   Zombies:
-Gold  Zombies:  0			Gold  Zombies:
-
-
-----------					----------
-Round  3:					Round  4:
-----------					----------
-
-Green Zombies:				Green Zombies:
-Blue  Zombies:				Blue  Zombies:
-Red   Zombies:				Red   Zombies:
-Gold  Zombies:				Gold  Zombies:
+	Green Zombies: 45			Green Zombies: 35
+	Blue  Zombies: 00			Blue  Zombies: 10
+	Red   Zombies: 00			Red   Zombies: 00
+	Gold  Zombies: 00			Gold  Zombies: 00
 
 
-----------					----------
-Round  5:					Round  6:
-----------					----------
+	----------					----------
+	Round  3:					Round  4:
+	----------					----------
 
-Green Zombies:				Green Zombies:
-Blue  Zombies:				Blue  Zombies:
-Red   Zombies:				Red   Zombies:
-Gold  Zombies:				Gold  Zombies:	
-
-
-----------					----------
-Round  7:					Round  8:
-----------					----------
-
-Green Zombies:				Green Zombies:
-Blue  Zombies:				Blue  Zombies:
-Red   Zombies:				Red   Zombies:
-Gold  Zombies:				Gold  Zombies:
+	Green Zombies: 40			Green Zombies: 30
+	Blue  Zombies: 20			Blue  Zombies: 35
+	Red   Zombies: 00			Red   Zombies: 00
+	Gold  Zombies: 00			Gold  Zombies: 00
 
 
-----------					-----------
-Round  9:					Round  10:
-----------					-----------
+	----------					----------
+	Round  5:					Round  6:
+	----------					----------
 
-Green Zombies:				Green Zombies:
-Blue  Zombies:				Blue  Zombies:
-Red   Zombies:				Red   Zombies:
-Gold  Zombies:				Gold  Zombies:
+	Green Zombies: 35			Green Zombies: 40
+	Blue  Zombies: 25			Blue  Zombies: 30
+	Red   Zombies: 01			Red   Zombies: 05
+	Gold  Zombies: 00			Gold  Zombies: 00
 
 
+	----------					----------
+	Round  7:					Round  8:
+	----------					----------
+
+	Green Zombies: 45			Green Zombies: 25
+	Blue  Zombies: 25			Blue  Zombies: 10
+	Red   Zombies: 15			Red   Zombies: 05
+	Gold  Zombies: 00			Gold  Zombies: 01
+
+
+	----------					-----------
+	Round  9:					Round  10:
+	----------					-----------
+
+	Green Zombies: 35			Green Zombies: 50
+	Blue  Zombies: 25			Blue  Zombies: 35
+	Red   Zombies: 15			Red   Zombies: 25
+	Gold  Zombies: 05			Gold  Zombies: 10
+	
+_______________________________________________________________
