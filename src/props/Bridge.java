@@ -21,8 +21,6 @@ public class Bridge
 		
 		bWidth = w;
 		bHeight = h;
-		
-		System.out.println("Bridge Created.");
 	}
 	
 	public void paint(Graphics g)

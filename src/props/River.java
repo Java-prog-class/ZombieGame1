@@ -21,8 +21,6 @@ public class River
 		
 		rWidth = w;
 		rHeight = h;
-		
-		System.out.println("River Created.");
 	}
 	
 	public void paint(Graphics g)

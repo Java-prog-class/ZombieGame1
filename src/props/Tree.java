@@ -13,8 +13,6 @@ public class Tree
 		xCenter = x;
 		yCenter = y;
 		radius = r;
-		
-		System.out.println("Tree Created.");
 	}
 	
 	public void paint(Graphics g)

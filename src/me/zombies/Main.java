@@ -88,6 +88,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			
 			//Draws all the Props:
 			//These must be called first otherwise they draw over the UI and Player:
+			
 			for (Building b : forestMapTest.buildings)
 			{
 				b.paint(g);
@@ -117,11 +118,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			} catch (IOException e) {}
 	
 			g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
-			g.drawImage(img, Player.x, Player.y,Player.width, Player.height, drPanel);							// <---- Draws the Player
+			g.drawImage(img, Player.x, Player.y, Player.width, Player.height, drPanel);							// <---- Draws the Player
 			g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
 			
 			
-		//Draw the Health Bar
+			//Draw the Health Bar:
 			int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
 			int BarHeight = WIN/30;
 			
@@ -143,8 +144,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent e) {
-		
+	public void keyPressed(KeyEvent e) 
+	{
 		if (e.getKeyCode()==KeyEvent.VK_W) W = true;
 		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
@@ -153,8 +154,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent e) {
-		
+	public void keyReleased(KeyEvent e) 
+	{
 		if (e.getKeyCode()==KeyEvent.VK_W) W = false;
 		if (e.getKeyCode()==KeyEvent.VK_A) A = false;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = false;
@@ -162,46 +163,82 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		
 	}
 	
-	private class TimerListener implements ActionListener {
+	private class TimerListener implements ActionListener 
+	{
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) 
+		{
 			
 	// ----- Stuff that happens every frame of the game -----
 			
-		//Movement	
-			if (W && Player.y>=0) Player.y-=Player.speed;					// <---- Moving Up
-			if (A && Player.x>=0) Player.x-=Player.speed;					// <---- Moving Left
-			if (S && Player.y<=WIN-Player.height) Player.y+=Player.speed;	// <---- Moving Down
-			if (D && Player.x<=WIN-Player.height) Player.x+=Player.speed;	// <---- Moving Right
+			//Movement:
+			if (W && Player.y >= 0) Player.y -= Player.speed;					// <---- Moving Up
+			if (A && Player.x >= 0) Player.x -= Player.speed;					// <---- Moving Left
+			if (S && Player.y <= WIN-Player.height) Player.y += Player.speed;	// <---- Moving Down
+			if (D && Player.x <= WIN-Player.height) Player.x += Player.speed;	// <---- Moving Right
 			
-		//Rotation
+			//Collision:
+			for (Building b : forestMapTest.buildings) 
+			{
+			//	Rectangle building = new Rectangle(b.xCord, b.yCord, b.width, b.height);
+				Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
+				
+				if (player.intersects(b)) 
+				{
+					//Left side of the Building:
+					if (Player.y > b.y && Player.y < (b.y + b.height))
+					{
+						if (Player.x <= b.x)
+						{
+							Player.x -= 5;
+						}
+						
+						if (Player.x >= b.x)
+						{
+							Player.x += 5;
+						}
+					}
+					
+					if (Player.x > b.x && Player.x < (b.x + b.width))
+					{
+						if (Player.y <= b.y)
+						{
+							Player.y -= 5;
+						}
+						
+						if (Player.y >= b.y)
+						{
+							Player.y += 5;
+						}
+					}
+ 				}
+			}
+			
+			//Rotation:
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
 			
-		//Death check
+			//Death Check:
 			if (Player.HP<=0) Player.alive = false;
-			
+		
 			window.repaint();
 		}
 		
 	}
 	
-	@Override
 	public void mousePressed(MouseEvent e) {
 		
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = true;
 		
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
 		
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();

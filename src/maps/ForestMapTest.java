@@ -15,7 +15,7 @@ public class ForestMapTest
 	
 	public void addProps()
 	{
-		buildings.add(new Building(70, 50, 70, 70, CabinRoof));
+		buildings.add(new Building(200, 300, 100, 100, CabinRoof));
 		
 		trees.add(new Tree(10, 150, 20));
 		

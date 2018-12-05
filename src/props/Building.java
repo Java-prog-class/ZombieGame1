@@ -1,36 +1,28 @@
 package props;
 import java.awt.*;
 
-public class Building 
+@SuppressWarnings("serial")
+public class Building extends Rectangle
 {
-	//Coordinates of the Building:
-	int xCord;
-	int yCord;
-	
-	//Width and Height of the Building:
-	int bWidth;
-	int bHeight;
-	
 	//Colors of the Building's Roof:
 	Color Roof;
 	
 	public Building(int x, int y, int w, int h, Color c)
 	{
-		xCord = x;
-		yCord = y;
+		this.x = x;
+		this.y = y;
 		
-		bWidth = w;
-		bHeight = h;
+		width = w;
+		height = h;
 		
 		Roof = c;
-		System.out.println("Building Created.");
 	}
 	
 	public void paint(Graphics g)
 	{
 		g.setColor(Roof);
-		g.fillRect(xCord, yCord, bWidth, bHeight);
+		g.fillRect(x, y, width, height);
 		g.setColor(Color.BLACK);
-		g.drawRect(xCord, yCord, bWidth, bHeight);
+		g.drawRect(x, y, width, height);
 	}
 }
