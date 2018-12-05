@@ -4,6 +4,7 @@ import java.awt.BasicStroke;		// <---- Imports
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -36,7 +37,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	Color Blue = new Color (0, 0, 255);
 	Color Red = new Color (255, 0, 0);
 	Color Black = new Color (0, 0, 0);
-	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
+	Font HPBarFont = new Font("Arial", Font.PLAIN, WIN/30);
+	Font ZombiesCounterFont = new Font("Arial", Font.BOLD, WIN/15);
 	BasicStroke stroke = new BasicStroke(WIN/300);
 	
 //Constants for Zombie Types
@@ -53,6 +55,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
 	String AddZombies = "Start";
 	int Round = 0;
+	int ZombiesCounter = 0;
 	Zombies z;
 	
 	static int mouseX;	// <---- Mouse Variables
@@ -103,13 +106,15 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			this.requestFocus();
 		
 			drawPlayer(g, g2);
-		
-			drawPlayerHealthBar(g, g2);
 			
-		//Draw Zombies
+			//Draw Zombies
 			for (Zombies z: zombies) {
 				z.paint(g);
 			}
+		
+			drawPlayerHealthBar(g, g2);
+			
+			drawZombieCounter(g, g2);
 			
 		}		
 
@@ -144,103 +149,113 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		g.setColor(Black);										// <---- Black Boarder
 		g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);
 		
-		g2.setFont(HPBar);										// <---- Display Text of HP
+		g2.setFont(HPBarFont);										// <---- Display Text of HP
 		String HPString = Player.HP+"/"+Player.maxHP;
 		g.drawString(HPString, (int)(WIN/3.6), WIN/16);
 	
 	}
 
+//Draw the Zombie Counter
+	void drawZombieCounter(Graphics g, Graphics2D g2) {
+
+		FontMetrics fontMetrics = g2.getFontMetrics(ZombiesCounterFont);
+		
+		String str = null;
+		
+		if (ZombiesCounter<10) str = "0"+ZombiesCounter;
+		else str = ""+ZombiesCounter;
+		
+		g.setColor(Black);
+		g2.setFont(ZombiesCounterFont);
+		
+		int rightAlign = (WIN/30)*29;
+		
+		g.drawString(str, (rightAlign - fontMetrics.stringWidth(str)), WIN/16);
+		
+	}
+	
 //Add Zombies
 	void addZombies() {
 		Round++;
+		ZombiesCounter = 0;
 		
 		//Round 1 Zombie Adding
 			if (Round==1) {
-				
 				for (int i=0; i<45; i++) zombies.add(new Zombies(GreenZombie));
-				
+				ZombiesCounter = 45;
 			}
 			
 		//Round 2 Zombie Adding
 			if (Round==2) {
-				
 				for (int i=0; i<35; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<10; i++) zombies.add(new Zombies(BlueZombie));
-			
+				ZombiesCounter = 45;
 			}
 			
 		//Round 3 Zombie Adding
 			if (Round==3) {
-				
 				for (int i=0; i<40; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<20; i++) zombies.add(new Zombies(BlueZombie));
-				
+				ZombiesCounter = 60;
 			}
 		//Round 4 Zombie Adding
 			if (Round==4) {
-				
 				for (int i=0; i<30; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<35; i++) zombies.add(new Zombies(BlueZombie));
-				
+				ZombiesCounter = 65;
 			}
 			
 		//Round 5 Zombie Adding
 			if (Round==5) {
-				
 				for (int i=0; i<35; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<25; i++) zombies.add(new Zombies(BlueZombie));
 				for (int i=0; i< 1; i++) zombies.add(new Zombies(RedZombie));
-				
+				ZombiesCounter = 61;
 			}
 			
 		//Round 6 Zombie Adding
 			if (Round==6) {
-				
 				for (int i=0; i<40; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<30; i++) zombies.add(new Zombies(BlueZombie));
 				for (int i=0; i< 5; i++) zombies.add(new Zombies(RedZombie));
-				
+				ZombiesCounter = 75;
 			}			
 		
 		//Round 7 Zombie Adding
 			if (Round==7) {
-				
 				for (int i=0; i<45; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<25; i++) zombies.add(new Zombies(BlueZombie));
 				for (int i=0; i<15; i++) zombies.add(new Zombies(RedZombie));
-				
+				ZombiesCounter = 85;
 			}
 			
 		//Round 8 Zombie Adding
 			if (Round==8) {
-				
 				for (int i=0; i<25; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<10; i++) zombies.add(new Zombies(BlueZombie));
 				for (int i=0; i<05; i++) zombies.add(new Zombies(RedZombie));
 				for (int i=0; i<01; i++) zombies.add(new Zombies(GoldZombie));
-				
+				ZombiesCounter = 41;
 			}
 			
 		//Round 9 Zombie Adding
-			if (Round==1) {
-				
+			if (Round==9) {
 				for (int i=0; i<35; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<25; i++) zombies.add(new Zombies(BlueZombie));
 				for (int i=0; i<15; i++) zombies.add(new Zombies(RedZombie));
 				for (int i=0; i<05; i++) zombies.add(new Zombies(GoldZombie));
-				
+				ZombiesCounter = 80;
 			}
 			
 		//Round 10 Zombie Adding
-			if (Round==1) {
-				
+			if (Round==10) {
 				for (int i=0; i<50; i++) zombies.add(new Zombies(GreenZombie));
 				for (int i=0; i<35; i++) zombies.add(new Zombies(BlueZombie));
 				for (int i=0; i<25; i++) zombies.add(new Zombies(RedZombie));
 				for (int i=0; i<10; i++) zombies.add(new Zombies(GoldZombie));
-				
+				ZombiesCounter = 120;
 			}
-		
+			
 		AddZombies = "End";
 	}
 	
@@ -275,7 +290,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		
 	}	
 
-//Player Inputs
+// -------------------------
+// ----- Player Inputs -----
+// -------------------------
+	
+//Keyboard Presses
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
@@ -296,6 +316,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		
 	}
 	
+//Mouse Inputs
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
@@ -309,12 +331,17 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
 		
 	}
-
+	
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
-		
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 
 //UNUSED METHOD
@@ -322,6 +349,4 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	public void mouseClicked(MouseEvent arg0) {}
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
-	public void mouseDragged(MouseEvent arg0) {}
-	
 }
