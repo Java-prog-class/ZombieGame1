@@ -9,24 +9,33 @@ import java.awt.Rectangle;
 public class Bullet {
 	double cx,cy;//Centre Coordinates
 	int x,y;	//int versions;
+	//int mx, my;
 	int r = 2;
-	double vx,vy,vx2,vy2;//Speeds
+	double speed = 3;//Speeds
+	double vx, vy;
+	int dx, dy;
+	double angle;
 	
-	int deltaX = Main.mouseX-Main.Player.x; 									// <---- Subtracting the Player location from the Mouse Location
-	int deltaY = Main.mouseY-Main.Player.y;
-	int angle = (int) Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
 	
-	Bullet(){
-		cx = angle;
-		cy= angle;
 
-		vx = -100.0;
-		vy = -100.0;
+	Bullet(PlayerStats player){
+		
+		dx = Main.mouseX - (player.x+player.width/2);
+		dy = Main.mouseY - (player.y+player.height/2);
+		angle = Math.atan2(dy,dx);
+		 		  
+		vx = (speed*Math.cos(angle));
+		vy = (speed*Math.sin(angle));
+				 
+		cx = player.x+player.width/2;
+		cy = player.y+player.height/2;
+		
+
 	}
 
 	void move() {
-		this.cx += 1;
-		this.cy += 1;
+		this.cx += vx;
+		this.cy += vy;
 
 		x = (int) cx;
 		y = (int) cy;
@@ -34,6 +43,6 @@ public class Bullet {
 
 	void paint(Graphics g) {		
 		g.setColor(Color.black);
-		g.fillOval(x-r, y-r, r*2, r*2);		
+		g.fillOval(x, y, r*2, r*2);		
 	}
 }

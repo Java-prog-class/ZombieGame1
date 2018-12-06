@@ -1,16 +1,24 @@
 package me.zombies;
 
-//Java Imports:
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.io.*;
-import javax.imageio.*;
-import javax.swing.*;
+import java.awt.BasicStroke;		// <---- Imports	
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 
-//Package Imports:
-import maps.*;
-import props.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,8 +41,9 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	BasicStroke stroke = new BasicStroke(WIN/300);
 
-//Varibles for shooting
+	//Varibles for shooting
 	//Array list for bullets
+
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
 	//Constants for Zombie Types
@@ -44,11 +53,16 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	int GoldZombie =  4;
 
 	//Global Variables
-	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
+	PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
 
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
 	static String Round = "Start";
 	Zombies z;
+	
+	//Weapons
+	Weapon pistol = new Weapon(5, 7, "Pistol");
+	int fire;
+
 
 	static int mouseX;	// <---- Mouse Variables
 	static int mouseY;
@@ -66,6 +80,10 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	public static void main (String [] args) {new Main();}
 
 	Main() {
+		//testing: JoshB modification to see if it pushes and merges with other stuff
+		int abcde= 12;
+		//end testing.		
+		guns();
 		//JFrame Setup:
 		window = new JFrame("Zombie Game");						// <---- Sets the titles
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// <---- Allows for closing
@@ -73,7 +91,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		drPanel.addKeyListener(this);							// <---- Adds the keyboard listener to the drPanel
 		drPanel.addMouseListener(this);							// <---- Adds the mouse listener to the drPanel
 		drPanel.addMouseMotionListener(this);					// <---- Adds the mouse motion listener to the drPanel
-		forestMapTest.addProps();                               // <---- Adds the props found on the map
 		window.add(drPanel);									// <---- Adds the drPanel to the Window
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
@@ -83,46 +100,26 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 
 	}
 
+	private void guns() {
+//		if(fire	< pistol.ammo) {
+//			bullets.add(new Bullet(Player));
+//		}
+		
+	}
+
 	@SuppressWarnings("serial")
-	private class DrawingPanel extends JPanel 
-	{
-		DrawingPanel() 
-		{
+	private class DrawingPanel extends JPanel {
+		DrawingPanel() {
 			this.setPreferredSize(new Dimension (WIN, WIN));	// <---- Sets the Size
 			this.setBackground(White);							// <---- Sets the background color
 		}
 
 		@Override
-		public void paintComponent(Graphics g) 
-		{
+		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;	
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 			super.paintComponent(g);
-			
-			//Draws all the Props:
-			//These must be called first otherwise they draw over the UI and Player:
-			
-			for (Building b : forestMapTest.buildings)
-			{
-				b.paint(g);
-			}
-			
-			for (Tree t : forestMapTest.trees)
-			{
-				t.paint(g);
-			}
-			
-			for (River r : forestMapTest.rivers)
-			{
-				r.paint(g);
-			}
-			
-			for (Bridge b : forestMapTest.bridges)
-			{
-				b.paint(g);
-			}
-			
 			g2.setStroke(stroke);
 			this.requestFocus();
 
@@ -270,18 +267,19 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		M1 = true;
-		System.out.println("yes");
-		System.out.println("good");
-		bullets.add(new Bullet());
+		fire++;
+		bullets.add(new Bullet(Player));
 		moveBullets();
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
 
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
