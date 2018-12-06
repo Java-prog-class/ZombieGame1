@@ -24,6 +24,11 @@ import props.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+<<<<<<<<< Temporary merge branch 1
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
 
 
 public class Main implements KeyListener, MouseListener, MouseMotionListener{
@@ -143,11 +148,36 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			for (Zombies z: zombies) {
 				z.paint(g);
 			}
-		
-			drawPlayerHealthBar(g, g2);
+=========
 			
-			drawZombieCounter(g, g2);
+			//Draws the Player:
+			BufferedImage img = null;
+			try { img = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
+			} catch (IOException e) {}
+	
+			g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
+			g.drawImage(img, Player.x, Player.y, Player.width, Player.height, drPanel);							// <---- Draws the Player
+			g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
 			
+			
+			//Draw the Health Bar:
+			int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
+			int BarHeight = WIN/30;
+			
+			g.setColor(White);										// <---- White Background
+			g.fillRect(BarHeight, BarHeight, BarWidth, BarHeight);
+			
+			g.setColor(Red);										// <---- Red Health Meter
+			int HPBarWidth = (int) (Player.PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Precentage
+			g.fillRect(BarHeight, BarHeight, HPBarWidth, BarHeight);
+			
+			g.setColor(Black);										// <---- Black Boarder
+			g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);
+			
+			g2.setFont(HPBar);										// <---- Display Text of HP
+			String HPString = Player.HP+"/"+Player.maxHP;
+			g.drawString(HPString, (int)(WIN/3.6), WIN/16);
+>>>>>>>>> Temporary merge branch 2
 		}		
 	}
 
@@ -448,10 +478,95 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		if (e.getKeyCode()==KeyEvent.VK_D) D = false;	
 
 	}
-	
-//Mouse Inputs
+
+	@Override
+=========
 	
 	@Override
+	public void keyPressed(KeyEvent e) 
+	{
+		if (e.getKeyCode()==KeyEvent.VK_W) W = true;
+		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
+		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
+		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
+		
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) 
+	{
+		if (e.getKeyCode()==KeyEvent.VK_W) W = false;
+		if (e.getKeyCode()==KeyEvent.VK_A) A = false;
+		if (e.getKeyCode()==KeyEvent.VK_S) S = false;
+		if (e.getKeyCode()==KeyEvent.VK_D) D = false;	
+		
+	}
+	
+	private class TimerListener implements ActionListener 
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			
+	// ----- Stuff that happens every frame of the game -----
+			
+			//Movement:
+			if (W && Player.y >= 0) Player.y -= Player.speed;					// <---- Moving Up
+			if (A && Player.x >= 0) Player.x -= Player.speed;					// <---- Moving Left
+			if (S && Player.y <= WIN-Player.height) Player.y += Player.speed;	// <---- Moving Down
+			if (D && Player.x <= WIN-Player.height) Player.x += Player.speed;	// <---- Moving Right
+			
+			//Collision:
+			for (Building b : forestMapTest.buildings) 
+			{
+			//	Rectangle building = new Rectangle(b.xCord, b.yCord, b.width, b.height);
+				Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
+				
+				if (player.intersects(b)) 
+				{
+					//Left side of the Building:
+					if (Player.y > b.y && Player.y < (b.y + b.height))
+					{
+						if (Player.x <= b.x)
+						{
+							Player.x -= 5;
+						}
+						
+						if (Player.x >= b.x)
+						{
+							Player.x += 5;
+						}
+					}
+					
+					if (Player.x > b.x && Player.x < (b.x + b.width))
+					{
+						if (Player.y <= b.y)
+						{
+							Player.y -= 5;
+						}
+						
+						if (Player.y >= b.y)
+						{
+							Player.y += 5;
+						}
+					}
+ 				}
+			}
+			
+			//Rotation:
+			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
+			int deltaY = mouseY-Player.y;
+			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
+			
+			//Death Check:
+			if (Player.HP<=0) Player.alive = false;
+		
+			window.repaint();
+		}
+		
+	}
+	
+>>>>>>>>> Temporary merge branch 2
 	public void mousePressed(MouseEvent e) {
 		M1 = true;
 		System.out.println("yes");
