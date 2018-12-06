@@ -90,6 +90,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			//Draws all the Props:
 			//These must be called first otherwise they draw over the UI and Player:
 			
+			for (Floor f : forestMapTest.floors)
+			{
+				f.paint(g);
+			}
+			
 			for (Building b : forestMapTest.buildings)
 			{
 				b.paint(g);
@@ -209,22 +214,37 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 					{
 						Player.y += 5;
 					}
+ 				}
+			}
+			
+			//TODO: Make the Rivers and Bridges with Each Other:
+			for (River r : forestMapTest.rivers) 
+			{
+				if (player.intersects(r)) 
+				{
+					//Left Side of the River:
+					if (Player.width <= r.height && D)
+					{ 
+						Player.x -= 5;
+					}
 					
-					/*if (Player.y > b.y && Player.y < (b.y + b.height))
+					//Right Side of the Building:
+					if (Player.width <= r.height && A)
 					{
-						//Left Side of the Building:
-						if (Player.x <= b.x)
-						{
-							Player.x -= 5;
-						}
-						
-						//Right Side of the Building:
-						if (Player.x >= b.x)
-						{
-							Player.x += 5;
-						}
-					}*/
+						Player.x += 5;
+					}
 					
+					//Top of the Building:
+					if (Player.height <= r.width && S)
+					{
+						Player.y -= 5;
+					}
+					
+					//Bottom of the Building:
+					if (Player.height <= r.width && W)
+					{
+						Player.y += 5;
+					}
  				}
 			}
 			//Rotation:
