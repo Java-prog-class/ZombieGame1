@@ -5,6 +5,13 @@ import java.awt.Graphics;
 
 class Zombies {
 
+//Colors
+	Color White = new Color (255, 255, 255);
+	Color Blue = new Color (0, 0, 255);
+	Color Red = new Color (255, 0, 0);
+	Color Black = new Color (0, 0, 0);
+	
+//Zombies Type
 	int GREEN = 1;
 	int BLUE = 2;
 	int RED = 3;
@@ -76,11 +83,26 @@ class Zombies {
 		if (this.type==  RED) g.setColor(Color.RED);
 		if (this.type== GOLD) g.setColor(Color.YELLOW);
 		
-		
-		
 		g.fillOval(x, y, Main.WIN/30, Main.WIN/30);
+		
+		drawZombiesHealthBar(g);
 	}
 	
-	
+	void drawZombiesHealthBar (Graphics g) {
+		
+		int BarWidth = 500; 	// <---- Constant Ratios based off of the Screen Width
+		int BarHeight = 50;
+		
+		g.setColor(White);										// <---- White Background
+		g.fillRect(BarHeight, BarHeight, BarWidth, BarHeight);
+		
+		g.setColor(Red);										// <---- Red Health Meter
+		int HPBarWidth = (int) (PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Precentage
+		g.fillRect(BarHeight, BarHeight, HPBarWidth, BarHeight);
+		
+		g.setColor(Black);										// <---- Black Boarder
+		g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);		
+		
+	}
 
 }
