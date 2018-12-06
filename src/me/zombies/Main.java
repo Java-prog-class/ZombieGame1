@@ -39,7 +39,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	Color Black = new Color (0, 0, 0);
 	Font HPBarFont = new Font("Arial", Font.PLAIN, WIN/30);
 	Font ZombiesCounterFont = new Font("Arial", Font.BOLD, WIN/15);
-	BasicStroke stroke = new BasicStroke(WIN/300);
+	BasicStroke PlayerHPBarStroke = new BasicStroke(WIN/300);
 	
 //Constants for Zombie Types
 	
@@ -101,14 +101,13 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			
 			super.paintComponent(g);
-			g2.setStroke(stroke);
 			this.requestFocus();
 		
 			drawPlayer(g, g2);
 			
 		//Draw Zombies
 			for (Zombies z: zombies) {
-				z.paint(g);
+				z.paint(g, g2);
 			}
 		
 			drawPlayerHealthBar(g, g2);
@@ -188,6 +187,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	
 //Draw the Health Bar
 	void drawPlayerHealthBar(Graphics g, Graphics2D g2) {
+
+		g2.setStroke(PlayerHPBarStroke);
 		
 		int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
 		int BarHeight = WIN/30;
@@ -320,13 +321,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	// ----- Stuff that happens every frame of the game -----
 	// ------------------------------------------------------	
 			
-		// Player Movement Movement	
-//			if (W && Player.y>=0) Player.y-=Player.speed;					// <---- Moving Up
-//			if (A && Player.x>=0) Player.x-=Player.speed;					// <---- Moving Left
-//			if (S && Player.y<=WIN-Player.height) Player.y+=Player.speed;	// <---- Moving Down
-//			if (D && Player.x<=WIN-Player.height) Player.x+=Player.speed;	// <---- Moving Right
-			
-
 			movePlayer();
 			
 			
@@ -341,17 +335,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			if (Player.HP<=0) Player.alive = false;
 			
 		//Zombie Death Check
-			
 			for (Zombies z: zombies) {
-				
 				if (z.HP<=0) {
 					zombies.remove(z);
 					ZombiesCounter--;
 				}
-				
 			}
-			
-			
 			
 		//Zombies Round Check
 			if (ZombiesCounter<=0) addZombies();

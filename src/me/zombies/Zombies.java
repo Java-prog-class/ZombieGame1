@@ -1,7 +1,9 @@
 package me.zombies;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 class Zombies {
 
@@ -10,12 +12,15 @@ class Zombies {
 	Color Blue = new Color (0, 0, 255);
 	Color Red = new Color (255, 0, 0);
 	Color Black = new Color (0, 0, 0);
+	BasicStroke ZombiesHPBarStroke = new BasicStroke(Main.WIN/500);
 	
 //Zombies Type
 	int GREEN = 1;
 	int BLUE = 2;
 	int RED = 3;
 	int GOLD = 4;
+	
+	int ZombiesWidth = Main.WIN/30;
 	
 //Variables
 	int x, y;
@@ -76,32 +81,42 @@ class Zombies {
 		
 	}
 	
-	void paint(Graphics g) {
+	void paint(Graphics g, Graphics2D g2) {
 		
 		if (this.type==GREEN) g.setColor(Color.GREEN);
 		if (this.type== BLUE) g.setColor(Color.BLUE);
 		if (this.type==  RED) g.setColor(Color.RED);
 		if (this.type== GOLD) g.setColor(Color.YELLOW);
+	
 		
-		g.fillOval(x, y, Main.WIN/30, Main.WIN/30);
+		g.fillOval(x, y, ZombiesWidth, ZombiesWidth);
 		
-		drawZombiesHealthBar(g);
+		drawZombiesHealthBar(g, g2, type);
 	}
 	
-	void drawZombiesHealthBar (Graphics g) {
+	void drawZombiesHealthBar (Graphics g, Graphics2D g2, int type) {
+		g2.setStroke(ZombiesHPBarStroke);
 		
-		int BarWidth = 500; 	// <---- Constant Ratios based off of the Screen Width
-		int BarHeight = 50;
+		int BarWidth = Main.WIN/10; 	// <---- Constant Ratios based off of the Screen Width
+		int BarHeight = Main.WIN/150;
+		
+		int BarX = x+(ZombiesWidth/2)-(BarWidth/2);
+		int BarY = y-(Main.WIN/60);
 		
 		g.setColor(White);										// <---- White Background
-		g.fillRect(BarHeight, BarHeight, BarWidth, BarHeight);
+		g.fillRect(BarX, BarY, BarWidth, BarHeight);
 		
-		g.setColor(Red);										// <---- Red Health Meter
-		int HPBarWidth = (int) (PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Precentage
-		g.fillRect(BarHeight, BarHeight, HPBarWidth, BarHeight);
+		
+		if (this.type==GREEN) g.setColor(Color.GREEN);			// <---- Colored Health Meter
+		if (this.type== BLUE) g.setColor(Color.BLUE);
+		if (this.type==  RED) g.setColor(Color.RED);
+		if (this.type== GOLD) g.setColor(Color.YELLOW);
+					
+		int HPBarWidth = (int) (PercentHP*BarWidth); 			// <---- The Size of the Meter based of the Health Precentage
+		g.fillRect(BarX, BarY, HPBarWidth, BarHeight);
 		
 		g.setColor(Black);										// <---- Black Boarder
-		g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);		
+		g.drawRect(BarX, BarY, BarWidth, BarHeight);		
 		
 	}
 
