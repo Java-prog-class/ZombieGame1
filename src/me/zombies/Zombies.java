@@ -5,15 +5,16 @@ import java.awt.Graphics;
 
 class Zombies {
 
-	int Green = 1;
-	int Blue = 2;
-	int Red = 3;
-	int Gold = 4;
+	int GREEN = 1;
+	int BLUE = 2;
+	int RED = 3;
+	int GOLD = 4;
 	
 //Variables
 	int x, y;
 	
 	int width, height;
+	int type;
 	
 	boolean alive;
 	
@@ -27,7 +28,7 @@ class Zombies {
 		
 
 	// Creating GREEN Zombies
-		if (type==Green) {					
+		if (type==GREEN) {					
 			this.maxHP= 10;
 			this.HP = 10;
 			this.speed = Main.WIN/1500;
@@ -35,7 +36,7 @@ class Zombies {
 		}
 		
 	// Creating BLUE Zombies	
-		if (type==Blue) {					
+		if (type==BLUE) {					
 			this.maxHP= 20;
 			this.HP = 20;
 			this.speed = Main.WIN/750;
@@ -43,7 +44,7 @@ class Zombies {
 		}
 		
 	// Creating RED Zombies
-		if (type==Red) {					
+		if (type==RED) {					
 			this.maxHP= 50;
 			this.HP = 50;
 			this.speed = Main.WIN/525;
@@ -51,7 +52,7 @@ class Zombies {
 		}
 		
 	// Creating GOLD Zombies		
-		if (type==Gold) {					
+		if (type==GOLD) {					
 			this.maxHP= 100;
 			this.HP = 100;
 			this.speed = Main.WIN/300;
@@ -61,15 +62,23 @@ class Zombies {
 		this.x = (int)(Math.random()*Main.WIN);
 		this.y = (int)(Math.random()*Main.WIN);
 		
-		this.alive = true;
+		this.type=type;
+		
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
 		
 	}
 	
 	void paint(Graphics g) {
-		g.setColor(Color.GREEN);
-		g.fillOval(x, y, 50, 50);
+		
+		if (this.type==GREEN) g.setColor(Color.GREEN);
+		if (this.type== BLUE) g.setColor(Color.BLUE);
+		if (this.type==  RED) g.setColor(Color.RED);
+		if (this.type== GOLD) g.setColor(Color.YELLOW);
+		
+		
+		
+		g.fillOval(x, y, Main.WIN/30, Main.WIN/30);
 	}
 	
 	
