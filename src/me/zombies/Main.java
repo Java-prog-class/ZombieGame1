@@ -53,7 +53,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	
 	
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
-	String AddZombies = "Start";
 	int Round = 0;
 	int ZombiesCounter = 0;
 	Zombies z;
@@ -107,7 +106,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		
 			drawPlayer(g, g2);
 			
-			//Draw Zombies
+		//Draw Zombies
 			for (Zombies z: zombies) {
 				z.paint(g);
 			}
@@ -126,11 +125,65 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		BufferedImage PlayerImg = null;
 		try { PlayerImg = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
 		} catch (IOException e) {}
-
+		
 		g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
-		g.drawImage(PlayerImg, Player.x, Player.y,Player.width, Player.height, drPanel);							// <---- Draws the Player
+		g.drawImage(PlayerImg, Player.x, Player.y,Player.width, Player.height, drPanel);					// <---- Draws the Player
 		g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
 	
+	}
+
+//Move the Player
+	void movePlayer() {
+		
+		double vx;
+		double vy;
+		double moveAngle;
+		
+		if (W) {								// <---- Moving Forward
+			
+			moveAngle = Math.toRadians(Player.angle-90);
+			
+			vx = Player.speed*Math.cos(moveAngle);	// <----Gets the horizontal speed based off the angle
+			vy = Player.speed*Math.sin(moveAngle);	// <----Gets the  vertical  speed based off the angle
+			
+			Player.y+=vy; 	// <---- Moves the player in accordance with
+			Player.x+=vx;	//		 it's vertical and horizontal speeds
+		}
+		
+		if (S) {								// <---- Moving Back
+			
+			moveAngle = Math.toRadians(Player.angle+90);
+			
+			vx = Player.speed*Math.cos(moveAngle);
+			vy = Player.speed*Math.sin(moveAngle);
+			
+			Player.y+=vy;
+			Player.x+=vx;
+		}
+		
+		if (D) {								// <---- Circling Right (Counter Clockwise)
+			
+			moveAngle = Math.toRadians(Player.angle);
+			
+			vx = Player.speed*Math.cos(moveAngle);
+			vy = Player.speed*Math.sin(moveAngle);
+			
+			Player.y+=vy;
+			Player.x+=vx;
+			
+		}
+		
+		if (A) {								// <---- Circling Left (Clockwise)
+			
+			moveAngle = Math.toRadians(Player.angle-180);
+			
+			vx = Player.speed*Math.cos(moveAngle);
+			vy = Player.speed*Math.sin(moveAngle);
+			
+			Player.y+=vy;
+			Player.x+=vx;
+		}	
+		
 	}
 	
 //Draw the Health Bar
@@ -149,7 +202,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		g.setColor(Black);										// <---- Black Boarder
 		g.drawRect(BarHeight, BarHeight, BarWidth, BarHeight);
 		
-		g2.setFont(HPBarFont);										// <---- Display Text of HP
+		g2.setFont(HPBarFont);									// <---- Display Text of HP
 		String HPString = Player.HP+"/"+Player.maxHP;
 		g.drawString(HPString, (int)(WIN/3.6), WIN/16);
 	
@@ -158,17 +211,17 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 //Draw the Zombie Counter
 	void drawZombieCounter(Graphics g, Graphics2D g2) {
 
-		FontMetrics fontMetrics = g2.getFontMetrics(ZombiesCounterFont);
+		FontMetrics fontMetrics = g2.getFontMetrics(ZombiesCounterFont);	// <---- Creates a FontMetrics
 		
-		String str = null;
+		String str = null;									// <---- Initizalises the string
 		
-		if (ZombiesCounter<10) str = "0"+ZombiesCounter;
+		if (ZombiesCounter<10) str = "0"+ZombiesCounter;  	// <---- Puts a '0' in front of single-digit numers
 		else str = ""+ZombiesCounter;
 		
-		g.setColor(Black);
-		g2.setFont(ZombiesCounterFont);
+		g.setColor(Black);			
+		g2.setFont(ZombiesCounterFont);			// <---- Changes the font
 		
-		int rightAlign = (WIN/30)*29;
+		int rightAlign = (WIN/30)*29; 			// <---- Creates a variable based off the screen width to align the text to the right
 		
 		g.drawString(str, (rightAlign - fontMetrics.stringWidth(str)), WIN/16);
 		
@@ -256,7 +309,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 				ZombiesCounter = 120;
 			}
 			
-		AddZombies = "End";
 	}
 	
 //Timer Listener
@@ -268,23 +320,43 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	// ----- Stuff that happens every frame of the game -----
 	// ------------------------------------------------------	
 			
-		//Movement	
-			if (W && Player.y>=0) Player.y-=Player.speed;					// <---- Moving Up
-			if (A && Player.x>=0) Player.x-=Player.speed;					// <---- Moving Left
-			if (S && Player.y<=WIN-Player.height) Player.y+=Player.speed;	// <---- Moving Down
-			if (D && Player.x<=WIN-Player.height) Player.x+=Player.speed;	// <---- Moving Right
+		// Player Movement Movement	
+//			if (W && Player.y>=0) Player.y-=Player.speed;					// <---- Moving Up
+//			if (A && Player.x>=0) Player.x-=Player.speed;					// <---- Moving Left
+//			if (S && Player.y<=WIN-Player.height) Player.y+=Player.speed;	// <---- Moving Down
+//			if (D && Player.x<=WIN-Player.height) Player.x+=Player.speed;	// <---- Moving Right
+			
+
+			movePlayer();
+			
+			
 			
 		//Rotation of Player
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
-			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
 			
-		//Death check
+			Player.angle = Math.toDegrees(Math.atan2(deltaY, deltaX))+90; 	// <---- The angle of rotation
+			
+		//Player Death Check
 			if (Player.HP<=0) Player.alive = false;
 			
-		//Zombies Round Check
-			if (AddZombies.equals("Start")) addZombies();
+		//Zombie Death Check
 			
+			for (Zombies z: zombies) {
+				
+				if (z.HP<=0) {
+					zombies.remove(z);
+					ZombiesCounter--;
+				}
+				
+			}
+			
+			
+			
+		//Zombies Round Check
+			if (ZombiesCounter<=0) addZombies();
+			
+		//Repaints the window (every frame)
 			window.repaint();
 		}
 		
