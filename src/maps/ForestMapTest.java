@@ -11,18 +11,10 @@ public class ForestMapTest
 	public ArrayList<Bridge> bridges = new ArrayList<Bridge>();
 	
 	//Custom Colors:
-	Color CabinRoof = new Color(4, 4, 112);
+	Color CabinRoof = new Color(105, 65, 45);
 	
 	public void addProps()
 	{
-		buildings.add(new Building(200, 300, 100, 100, CabinRoof));
-		
-		trees.add(new Tree(10, 150, 20));
-		
-		rivers.add(new River(200, 0, 25, 225));
-		rivers.add(new River(0, 200, 225, 25));
-		
-		
-		bridges.add(new Bridge(100, 195, 25, 35));
+		buildings.add(new Building(300, 100, 100, 100, CabinRoof));
 	}
 }

@@ -1,31 +1,25 @@
 package props;
 import java.awt.*;
 
-public class River 
+@SuppressWarnings("serial")
+public class River extends Rectangle
 {
-	//Coordinates of the River:
-	int xCord;
-	int yCord;
-	
-	//Width and Height of the River:
-	int rWidth;
-	int rHeight;
-	
 	//Color of the River:
 	Color riverColor = new Color(0, 20, 210);
 	
 	public River(int x, int y, int w, int h)
 	{
-		xCord = x;
-		yCord = y;
+		this.x = x;
+		this.y = y;
 		
-		rWidth = w;
-		rHeight = h;
+		width = w;
+		height = h;
 	}
 	
 	public void paint(Graphics g)
 	{
+		//Draws the River:
 		g.setColor(riverColor);
-		g.fillRect(xCord, yCord, rWidth, rHeight);
+		g.fillRect(x, y, width, height);
 	}
 }

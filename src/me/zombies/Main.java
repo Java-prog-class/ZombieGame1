@@ -24,6 +24,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	Color Blue = new Color (0, 0, 255);
 	Color Red = new Color (255, 0, 0);
 	Color Black = new Color (0, 0, 0);
+	Color Grass = new Color(0, 64, 0);
 	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	BasicStroke stroke = new BasicStroke(WIN/300);
 	
@@ -75,7 +76,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		DrawingPanel() 
 		{
 			this.setPreferredSize(new Dimension (WIN, WIN));	// <---- Sets the Size
-			this.setBackground(White);							// <---- Sets the background color
+			this.setBackground(Grass);							// <---- Sets the background color
 		}
 		
 		@Override
@@ -178,42 +179,54 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			if (D && Player.x <= WIN-Player.height) Player.x += Player.speed;	// <---- Moving Right
 			
 			//Collision:
+			Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
+			
+			//For Buildings:
 			for (Building b : forestMapTest.buildings) 
 			{
-			//	Rectangle building = new Rectangle(b.xCord, b.yCord, b.width, b.height);
-				Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
-				
 				if (player.intersects(b)) 
 				{
-					//Left side of the Building:
-					if (Player.y > b.y && Player.y < (b.y + b.height))
+					//Left Side of the Building:
+					if (Player.width <= b.height && D)
+					{ 
+						Player.x -= 5;
+					}
+					
+					//Right Side of the Building:
+					if (Player.width <= b.height && A)
 					{
+						Player.x += 5;
+					}
+					
+					//Top of the Building:
+					if (Player.height <= b.width && S)
+					{
+						Player.y -= 5;
+					}
+					
+					//Bottom of the Building:
+					if (Player.height <= b.width && W)
+					{
+						Player.y += 5;
+					}
+					
+					/*if (Player.y > b.y && Player.y < (b.y + b.height))
+					{
+						//Left Side of the Building:
 						if (Player.x <= b.x)
 						{
 							Player.x -= 5;
 						}
 						
+						//Right Side of the Building:
 						if (Player.x >= b.x)
 						{
 							Player.x += 5;
 						}
-					}
+					}*/
 					
-					if (Player.x > b.x && Player.x < (b.x + b.width))
-					{
-						if (Player.y <= b.y)
-						{
-							Player.y -= 5;
-						}
-						
-						if (Player.y >= b.y)
-						{
-							Player.y += 5;
-						}
-					}
  				}
 			}
-			
 			//Rotation:
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;

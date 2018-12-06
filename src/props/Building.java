@@ -20,8 +20,11 @@ public class Building extends Rectangle
 	
 	public void paint(Graphics g)
 	{
+		//Draws the Building:
 		g.setColor(Roof);
 		g.fillRect(x, y, width, height);
+		
+		//Draws the Outline:
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y, width, height);
 	}
