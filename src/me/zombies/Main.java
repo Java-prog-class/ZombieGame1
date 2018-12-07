@@ -26,7 +26,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import maps.ForestMapTest;
+import maps.HospitalMap1;
 import props.Building;
+import props.Floor;
+import props.Wall;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -56,7 +59,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	HospitalMap1  hospitalMap1 = new HospitalMap1();
 	
 	//Global Variables:
-	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
+	static PlayerStats Player1 = new PlayerStats("Josh");	// <---- Creating the Player Object
 	
 
 	//Varibles for shooting
@@ -110,7 +113,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		drPanel.addKeyListener(this);							// <---- Adds the keyboard listener to the drPanel
 		drPanel.addMouseListener(this);							// <---- Adds the mouse listener to the drPanel
 		drPanel.addMouseMotionListener(this);					// <---- Adds the mouse motion listener to the drPanel
-		forestMapTest.addProps();                               // <---- Adds the props found on the map
 		window.add(drPanel);									// <---- Adds the drPanel to the Window
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
@@ -154,7 +156,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			//Draws all the Props:
 			//These must be called first otherwise they draw over the UI and Player:
 			
-			for (Floor f : hospitalMap1.floors)
+			for (Floor f : HospitalMap1.floors)
 			{
 				f.paint(g);
 			drawPlayer(g, g2);
@@ -434,7 +436,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) 
 	{
 		if (e.getKeyCode()==KeyEvent.VK_W) W = false;
@@ -580,21 +581,18 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		guns();
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
 
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
 
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
@@ -605,10 +603,70 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 
-	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
+}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }

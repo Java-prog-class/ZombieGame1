@@ -5,7 +5,7 @@ import props.*;
 
 public class HospitalMap1 
 {
-	public ArrayList<Floor> floors = new ArrayList<Floor>();
+	public static ArrayList<Floor> floors = new ArrayList<Floor>();
 	public ArrayList<Wall> walls = new ArrayList<Wall>();
 	
 	//Custom Colors:
