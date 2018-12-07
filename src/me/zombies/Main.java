@@ -46,9 +46,18 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	Color Blue = new Color (0, 0, 255);
 	Color Red = new Color (255, 0, 0);
 	Color Black = new Color (0, 0, 0);
+	Color Grass = new Color(0, 64, 0);
+	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	Font HPBarFont = new Font("Arial", Font.PLAIN, WIN/30);
 	Font ZombiesCounterFont = new Font("Arial", Font.BOLD, WIN/15);
 	BasicStroke stroke = new BasicStroke(WIN/300);
+	
+	//Maps:
+	HospitalMap1  hospitalMap1 = new HospitalMap1();
+	
+	//Global Variables:
+	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
+	
 
 	//Varibles for shooting
 	//Array list for bullets
@@ -101,6 +110,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		drPanel.addKeyListener(this);							// <---- Adds the keyboard listener to the drPanel
 		drPanel.addMouseListener(this);							// <---- Adds the mouse listener to the drPanel
 		drPanel.addMouseMotionListener(this);					// <---- Adds the mouse motion listener to the drPanel
+		forestMapTest.addProps();                               // <---- Adds the props found on the map
 		window.add(drPanel);									// <---- Adds the drPanel to the Window
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
@@ -130,7 +140,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	private class DrawingPanel extends JPanel {
 		DrawingPanel() {
 			this.setPreferredSize(new Dimension (WIN, WIN));	// <---- Sets the Size
-			this.setBackground(White);							// <---- Sets the background color
+			this.setBackground(Grass);							// <---- Sets the background color
 		}
 
 		@Override
@@ -141,6 +151,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			super.paintComponent(g);
 			this.requestFocus();
 			
+			//Draws all the Props:
+			//These must be called first otherwise they draw over the UI and Player:
+			
+			for (Floor f : hospitalMap1.floors)
+			{
+				f.paint(g);
 			drawPlayer(g, g2);
 			moveBullets();
 			addBullets(g);
@@ -151,6 +167,15 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			}
 
 
+			
+			for (Wall w : hospitalMap1.walls)
+			{
+				w.paint(g);
+			}
+			
+			g2.setStroke(stroke);
+			this.requestFocus();
+			
 			//Draws the Player:
 			BufferedImage img = null;
 			try { img = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
@@ -434,42 +459,84 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			if (D && Player.x <= WIN-Player.height) Player.x += Player.speed;	// <---- Moving Right
 
 			//Collision:
-			for (Building b : ForestMapTest.buildings) 
+			Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
+			
+			//Walls:
+			for (Wall w : hospitalMap1.walls) 
 			{
-				//	Rectangle building = new Rectangle(b.xCord, b.yCord, b.width, b.height);
-				Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
-
-				if (player.intersects(b)) 
+				if (player.intersects(w)) 
 				{
-					//Left side of the Building:
-					if (Player.y > b.y && Player.y < (b.y + b.height))
-					{
-						if (Player.x <= b.x)
-						{
-							Player.x -= 5;
-						}
-
-						if (Player.x >= b.x)
-						{
-							Player.x += 5;
-						}
+					if (Player.width <= w.height && D)
+					{ 
+						Player.x -= 5;
 					}
-
-					if (Player.x > b.x && Player.x < (b.x + b.width))
+					
+					if (Player.width <= w.height && A)
 					{
-						if (Player.y <= b.y)
-						{
-							Player.y -= 5;
-						}
-
-						if (Player.y >= b.y)
-						{
-							Player.y += 5;
-						}
+						Player.x += 5;
 					}
-				}
+					
+					if (Player.height <= w.width && S)
+					{
+						Player.y -= 5;
+					}
+					
+					if (Player.height <= w.width && W)
+					{
+						Player.y += 5;
+					}
+ 				}
 			}
-
+			
+			/*
+			for (River r : forestMapTest.rivers) 
+			{
+				if (player.intersects(r)) 
+				{
+					//Left Side of the River:
+					if (Player.width <= r.height && D)
+					{ 
+						Player.x -= 5;
+					}
+					
+					//Right Side of the Building:
+					if (Player.width <= r.height && A)
+					{
+						Player.x += 5;
+					}
+					
+					//Top of the Building:
+					if (Player.height <= r.width && S)
+					{
+						Player.y -= 5;
+					}
+					
+					//Bottom of the Building:
+					if (Player.height <= r.width && W)
+					{
+						Player.y += 5;
+					}
+ 				}
+			}
+			
+			for (Bridge b: forestMapTest.bridges)
+			{
+				if (player.intersects(b))
+				{
+					//Top of the Building:
+					if (Player.height <= b.width && S)
+					{
+						Player.y -= 5;
+					}
+					
+					//Bottom of the Building:
+					if (Player.height <= b.width && W)
+					{
+						Player.y += 5;
+					}	
+				}
+			}*/
+			
 			//Rotation:
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;

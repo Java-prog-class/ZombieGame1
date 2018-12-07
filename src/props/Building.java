@@ -5,7 +5,7 @@ import java.awt.*;
 public class Building extends Rectangle
 {
 	//Colors of the Building's Roof:
-	Color Roof;
+	Color roofColor;
 	
 	public Building(int x, int y, int w, int h, Color c)
 	{
@@ -15,13 +15,16 @@ public class Building extends Rectangle
 		width = w;
 		height = h;
 		
-		Roof = c;
+		roofColor = c;
 	}
 	
 	public void paint(Graphics g)
 	{
-		g.setColor(Roof);
+		//Draws the Building:
+		g.setColor(roofColor);
 		g.fillRect(x, y, width, height);
+		
+		//Draws the Outline:
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y, width, height);
 	}

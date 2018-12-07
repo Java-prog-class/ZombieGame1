@@ -1,33 +1,29 @@
 package props;
 import java.awt.*;
 
-public class Bridge 
+@SuppressWarnings("serial")
+public class Bridge extends Rectangle
 {
-	//Coordinates of the Bridge:
-	int xCord;
-	int yCord;
-	
-	//Width and Height of the Bridge:
-	int bWidth;
-	int bHeight;
-	
 	//Custom Color of the Bridge:
 	Color bridgeColor = new Color(145, 95, 25);
 	
 	public Bridge(int x, int y, int w, int h)
 	{
-		xCord = x;
-		yCord = y;
+		this.x = x;
+		this.y = y;
 		
-		bWidth = w;
-		bHeight = h;
+		width = w;
+		height = h;
 	}
 	
 	public void paint(Graphics g)
 	{
+		//Draws the Bridge:
 		g.setColor(bridgeColor);
-		g.fillRect(xCord, yCord, bWidth, bHeight);
+		g.fillRect(x, y, width, height);
+		
+		//Draws the Outline:
 		g.setColor(Color.BLACK);
-		g.drawRect(xCord, yCord, bWidth, bHeight);
+		g.drawRect(x, y, width, height);
 	}
 }

@@ -9,20 +9,29 @@ public class ForestMapTest
 	public ArrayList<Tree> trees = new ArrayList<Tree>();
 	public ArrayList<River> rivers = new ArrayList<River>();
 	public ArrayList<Bridge> bridges = new ArrayList<Bridge>();
+	public ArrayList<Floor> floors = new ArrayList<Floor>();
 	
 	//Custom Colors:
-	Color CabinRoof = new Color(4, 4, 112);
+	Color CabinRoof = new Color(105, 65, 45);
+	Color Grass = new Color (0, 100, 0);
 	
 	public void addProps()
 	{
-		buildings.add(new Building(200, 300, 100, 100, CabinRoof));
+		//Floors:
+		floors.add(new Floor(0, 0, 500, 500, Grass));
 		
-		trees.add(new Tree(10, 150, 20));
+		//Buildings:
+		buildings.add(new Building(400, 0, 100, 95, CabinRoof));
+		buildings.add(new Building(0, 100, 100, 100, CabinRoof));
+		buildings.add(new Building(0, 300, 100, 100, CabinRoof));
 		
-		rivers.add(new River(200, 0, 25, 225));
-		rivers.add(new River(0, 200, 225, 25));
+		//Rivers:
+		//Do NOT let the Rivers and Bridge Intersect:
+		rivers.add(new River(300, 0, 30, 50));
+		rivers.add(new River(300, 90, 30, 110));
+		rivers.add(new River(300, 200, 200, 30));
 		
-		
-		bridges.add(new Bridge(100, 195, 25, 35));
+		//Bridges:
+		bridges.add(new Bridge(285, 50, 60, 40));
 	}
 }

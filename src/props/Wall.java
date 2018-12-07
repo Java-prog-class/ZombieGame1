@@ -2,24 +2,26 @@ package props;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-public class River extends Rectangle
+public class Wall extends Rectangle
 {
-	//Color of the River:
-	Color riverColor = new Color(0, 20, 210);
+	//Color of the Wall:
+	Color wallColor;
 	
-	public River(int x, int y, int w, int h)
+	public Wall(int x, int y, int w, int h, Color c)
 	{
 		this.x = x;
 		this.y = y;
 		
 		width = w;
 		height = h;
+		
+		wallColor = c;
 	}
 	
 	public void paint(Graphics g)
 	{
-		//Draws the River:
-		g.setColor(riverColor);
+		//Draws the Wall:
+		g.setColor(wallColor);
 		g.fillRect(x, y, width, height);
 	}
 }
