@@ -26,7 +26,9 @@ public class ForestMapTest
 		buildings.add(new Building(0, 300, 100, 100, CabinRoof));
 		
 		//Rivers:
-		rivers.add(new River(300, 0, 30, 200));
+		//Do NOT let the Rivers and Bridge Intersect:
+		rivers.add(new River(300, 0, 30, 50));
+		rivers.add(new River(300, 90, 30, 110));
 		rivers.add(new River(300, 200, 200, 30));
 		
 		//Bridges:

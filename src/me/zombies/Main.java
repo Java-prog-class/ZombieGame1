@@ -29,7 +29,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	BasicStroke stroke = new BasicStroke(WIN/300);
 	
 	//Maps:
-	ForestMapTest forestMapTest = new ForestMapTest();
+	HospitalMap1  hospitalMap1 = new HospitalMap1();
 	
 	//Global Variables:
 	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
@@ -61,7 +61,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		drPanel.addKeyListener(this);							// <---- Adds the keyboard listener to the drPanel
 		drPanel.addMouseListener(this);							// <---- Adds the mouse listener to the drPanel
 		drPanel.addMouseMotionListener(this);					// <---- Adds the mouse motion listener to the drPanel
-		forestMapTest.addProps();                               // <---- Adds the props found on the map
+		hospitalMap1.addProps();                               // <---- Adds the props found on the map
 		window.add(drPanel);									// <---- Adds the drPanel to the Window
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visible
@@ -90,29 +90,14 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			//Draws all the Props:
 			//These must be called first otherwise they draw over the UI and Player:
 			
-			for (Floor f : forestMapTest.floors)
+			for (Floor f : hospitalMap1.floors)
 			{
 				f.paint(g);
 			}
 			
-			for (Building b : forestMapTest.buildings)
+			for (Wall w : hospitalMap1.walls)
 			{
-				b.paint(g);
-			}
-			
-			for (Tree t : forestMapTest.trees)
-			{
-				t.paint(g);
-			}
-			
-			for (River r : forestMapTest.rivers)
-			{
-				r.paint(g);
-			}
-			
-			for (Bridge b : forestMapTest.bridges)
-			{
-				b.paint(g);
+				w.paint(g);
 			}
 			
 			g2.setStroke(stroke);
@@ -186,38 +171,34 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			//Collision:
 			Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
 			
-			//For Buildings:
-			for (Building b : forestMapTest.buildings) 
+			//Walls:
+			for (Wall w : hospitalMap1.walls) 
 			{
-				if (player.intersects(b)) 
+				if (player.intersects(w)) 
 				{
-					//Left Side of the Building:
-					if (Player.width <= b.height && D)
+					if (Player.width <= w.height && D)
 					{ 
 						Player.x -= 5;
 					}
 					
-					//Right Side of the Building:
-					if (Player.width <= b.height && A)
+					if (Player.width <= w.height && A)
 					{
 						Player.x += 5;
 					}
 					
-					//Top of the Building:
-					if (Player.height <= b.width && S)
+					if (Player.height <= w.width && S)
 					{
 						Player.y -= 5;
 					}
 					
-					//Bottom of the Building:
-					if (Player.height <= b.width && W)
+					if (Player.height <= w.width && W)
 					{
 						Player.y += 5;
 					}
  				}
 			}
 			
-			//TODO: Make the Rivers and Bridges with Each Other:
+			/*
 			for (River r : forestMapTest.rivers) 
 			{
 				if (player.intersects(r)) 
@@ -247,6 +228,25 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 					}
  				}
 			}
+			
+			for (Bridge b: forestMapTest.bridges)
+			{
+				if (player.intersects(b))
+				{
+					//Top of the Building:
+					if (Player.height <= b.width && S)
+					{
+						Player.y -= 5;
+					}
+					
+					//Bottom of the Building:
+					if (Player.height <= b.width && W)
+					{
+						Player.y += 5;
+					}	
+				}
+			}*/
+			
 			//Rotation:
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
