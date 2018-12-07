@@ -5,7 +5,7 @@ import props.*;
 
 public class ForestMapTest 
 {
-	public ArrayList<Building> buildings = new ArrayList<Building>();
+	public static ArrayList<Building> buildings = new ArrayList<Building>();
 	public ArrayList<Tree> trees = new ArrayList<Tree>();
 	public ArrayList<River> rivers = new ArrayList<River>();
 	public ArrayList<Bridge> bridges = new ArrayList<Bridge>();
