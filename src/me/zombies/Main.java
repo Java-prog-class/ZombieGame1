@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,13 +25,13 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Main implements KeyListener, MouseListener, MouseMotionListener{
+public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	
 //JFrame and JWindow Creations
 	final static int WIN = 1500;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
-	
+
 	
 //Colors, Font, and Stroke 
 	Color White = new Color (255, 255, 255);
@@ -52,6 +53,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
 	
 	
+	
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
 	int Round = 0;
 	int ZombiesCounter = 0;
@@ -69,6 +71,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	
 	Timer timer;	// <---- Initializes the Timer
 	int tSpeed = 1;	// <---- The Timer's Speed
+	long lastHit = 0L;
 	
 	public static void main (String [] args) {new Main();}
 	
@@ -102,7 +105,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 			
 			super.paintComponent(g);
 			this.requestFocus();
-		
+			
 			drawPlayer(g, g2);
 			
 		//Draw Zombies
@@ -124,6 +127,9 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 		BufferedImage PlayerImg = null;
 		try { PlayerImg = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
 		} catch (IOException e) {}
+		
+		g.setColor(Black);
+		g.fillRect(Player.x, Player.y,Player.width, Player.height);
 		
 		g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
 		g.drawImage(PlayerImg, Player.x, Player.y,Player.width, Player.height, drPanel);					// <---- Draws the Player
@@ -316,23 +322,36 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener{
 	private class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 		
 	// ------------------------------------------------------
 	// ----- Stuff that happens every frame of the game -----
 	// ------------------------------------------------------	
+			Player.PercentRatio = ((Player.HP*100)/Player.maxHP);
+			Player.PercentHP = Player.PercentRatio/100;
+			
 			
 			movePlayer();
 			
-			
-			
 		//Rotation of Player
-			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
-			int deltaY = mouseY-Player.y;
+			int deltaX = mouseX-Player.x; 				// <---- Subtracting the Player location 
+			int deltaY = mouseY-Player.y;				//		 from the Mouse Location
 			
 			Player.angle = Math.toDegrees(Math.atan2(deltaY, deltaX))+90; 	// <---- The angle of rotation
 			
 		//Player Death Check
 			if (Player.HP<=0) Player.alive = false;
+			
+		//Zombie Hit Check
+			for (Zombies z: zombies) {
+				if (z.intersects(Player)) {
+					long now = System.currentTimeMillis();
+					if ((now-lastHit)>1000) {
+						lastHit = now;
+						Player.HP-=z.damage;
+					}
+				}
+			}
 			
 		//Zombie Death Check
 			for (Zombies z: zombies) {
