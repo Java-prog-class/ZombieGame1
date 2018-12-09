@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+@SuppressWarnings("serial")
 class Zombies extends Rectangle{
 
 //Colors
@@ -24,9 +25,6 @@ class Zombies extends Rectangle{
 	int ZombiesWidth = Main.WIN/30;
 	
 //Variables
-//	int x, y;
-	
-//	int width, height;
 	int type;
 	
 	boolean alive;
@@ -42,7 +40,7 @@ class Zombies extends Rectangle{
 
 	// Creating GREEN Zombies
 		if (type==GREEN) {					
-			this.maxHP = 10;
+			this.maxHP= 10;
 			this.HP = 10;
 			this.speed = Main.WIN/1500;
 			this.damage = 1;
@@ -50,7 +48,7 @@ class Zombies extends Rectangle{
 		
 	// Creating BLUE Zombies	
 		if (type==BLUE) {					
-			this.maxHP = 20;
+			this.maxHP= 20;
 			this.HP = 20;
 			this.speed = Main.WIN/750;
 			this.damage = 5;
@@ -58,7 +56,7 @@ class Zombies extends Rectangle{
 		
 	// Creating RED Zombies
 		if (type==RED) {					
-			this.maxHP = 50;
+			this.maxHP= 50;
 			this.HP = 50;
 			this.speed = Main.WIN/525;
 			this.damage = 10;
@@ -66,7 +64,7 @@ class Zombies extends Rectangle{
 		
 	// Creating GOLD Zombies		
 		if (type==GOLD) {					
-			this.maxHP = 100;
+			this.maxHP= 100;
 			this.HP = 100;
 			this.speed = Main.WIN/300;
 			this.damage = 20;
@@ -81,19 +79,20 @@ class Zombies extends Rectangle{
 		
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
-		
 	}
 	
 	void paint(Graphics g, Graphics2D g2) {
 		
 		g.setColor(Black);
 		g.fillRect(x, y, ZombiesWidth, ZombiesWidth);
+
 		
 		if (this.type==GREEN) g.setColor(Color.GREEN);
 		if (this.type== BLUE) g.setColor(Color.BLUE);
 		if (this.type==  RED) g.setColor(Color.RED);
 		if (this.type== GOLD) g.setColor(Color.YELLOW);
 	
+		
 		g.fillOval(x, y, ZombiesWidth, ZombiesWidth);
 		
 		drawZombiesHealthBar(g, g2, type);
