@@ -1,19 +1,33 @@
 package me.zombies;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
-class Zombies {
+class Zombies extends Rectangle{
 
-	int Green = 1;
-	int Blue = 2;
-	int Red = 3;
-	int Gold = 4;
+//Colors
+	Color White = new Color (255, 255, 255);
+	Color Blue = new Color (0, 0, 255);
+	Color Red = new Color (255, 0, 0);
+	Color Black = new Color (0, 0, 0);
+	BasicStroke ZombiesHPBarStroke = new BasicStroke(Main.WIN/500);
+	
+//Zombies Type
+	int GREEN = 1;
+	int BLUE = 2;
+	int RED = 3;
+	int GOLD = 4;
+	
+	int ZombiesWidth = Main.WIN/30;
 	
 //Variables
-	int x, y;
+//	int x, y;
 	
-	int width, height;
+//	int width, height;
+	int type;
 	
 	boolean alive;
 	
@@ -27,32 +41,32 @@ class Zombies {
 		
 
 	// Creating GREEN Zombies
-		if (type==Green) {					
-			this.maxHP= 10;
+		if (type==GREEN) {					
+			this.maxHP = 10;
 			this.HP = 10;
 			this.speed = Main.WIN/1500;
 			this.damage = 1;
 		}
 		
 	// Creating BLUE Zombies	
-		if (type==Blue) {					
-			this.maxHP= 20;
+		if (type==BLUE) {					
+			this.maxHP = 20;
 			this.HP = 20;
 			this.speed = Main.WIN/750;
 			this.damage = 5;
 		}
 		
 	// Creating RED Zombies
-		if (type==Red) {					
-			this.maxHP= 50;
+		if (type==RED) {					
+			this.maxHP = 50;
 			this.HP = 50;
 			this.speed = Main.WIN/525;
 			this.damage = 10;
 		}
 		
 	// Creating GOLD Zombies		
-		if (type==Gold) {					
-			this.maxHP= 100;
+		if (type==GOLD) {					
+			this.maxHP = 100;
 			this.HP = 100;
 			this.speed = Main.WIN/300;
 			this.damage = 20;
@@ -60,18 +74,55 @@ class Zombies {
 		
 		this.x = (int)(Math.random()*Main.WIN);
 		this.y = (int)(Math.random()*Main.WIN);
+		this.width = ZombiesWidth;
+		this.height = ZombiesWidth;
 		
-		this.alive = true;
+		this.type=type;
+		
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
 		
 	}
 	
-	void paint(Graphics g) {
-		g.setColor(Color.GREEN);
-		g.fillOval(x, y, 50, 50);
+	void paint(Graphics g, Graphics2D g2) {
+		
+		g.setColor(Black);
+		g.fillRect(x, y, ZombiesWidth, ZombiesWidth);
+		
+		if (this.type==GREEN) g.setColor(Color.GREEN);
+		if (this.type== BLUE) g.setColor(Color.BLUE);
+		if (this.type==  RED) g.setColor(Color.RED);
+		if (this.type== GOLD) g.setColor(Color.YELLOW);
+	
+		g.fillOval(x, y, ZombiesWidth, ZombiesWidth);
+		
+		drawZombiesHealthBar(g, g2, type);
 	}
 	
-	
+	void drawZombiesHealthBar (Graphics g, Graphics2D g2, int type) {
+		g2.setStroke(ZombiesHPBarStroke);
+		
+		int BarWidth = Main.WIN/10; 	// <---- Constant Ratios based off of the Screen Width
+		int BarHeight = Main.WIN/150;
+		
+		int BarX = x+(ZombiesWidth/2)-(BarWidth/2);
+		int BarY = y-(Main.WIN/60);
+		
+		g.setColor(White);										// <---- White Background
+		g.fillRect(BarX, BarY, BarWidth, BarHeight);
+		
+		
+		if (this.type==GREEN) g.setColor(Color.GREEN);			// <---- Colored Health Meter
+		if (this.type== BLUE) g.setColor(Color.BLUE);
+		if (this.type==  RED) g.setColor(Color.RED);
+		if (this.type== GOLD) g.setColor(Color.YELLOW);
+					
+		int HPBarWidth = (int) (PercentHP*BarWidth); 			// <---- The Size of the Meter based of the Health Precentage
+		g.fillRect(BarX, BarY, HPBarWidth, BarHeight);
+		
+		g.setColor(Black);										// <---- Black Boarder
+		g.drawRect(BarX, BarY, BarWidth, BarHeight);		
+		
+	}
 
 }

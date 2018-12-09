@@ -1,13 +1,10 @@
 package me.zombies;
 
-class PlayerStats {
+import java.awt.Rectangle;
+
+class PlayerStats extends Rectangle{
 	
 //Variables
-	int x = Main.WIN/2;
-	int y = Main.WIN/2;
-	
-	int width = Main.WIN/20;
-	int height = Main.WIN/15;
 	
 	boolean alive;
 	
@@ -17,6 +14,14 @@ class PlayerStats {
 	double PercentRatio, PercentHP, angle;
 	
 	PlayerStats(String name){
+		
+		x = Main.WIN/2;
+		y = Main.WIN/2;
+		
+		width = Main.WIN/20;
+		height = Main.WIN/20;
+//		height = Main.WIN/15;
+		
 		this.alive = true;
 		this.name = name;
 		this.maxHP = 20;
