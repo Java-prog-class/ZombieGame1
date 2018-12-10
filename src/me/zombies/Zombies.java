@@ -26,6 +26,7 @@ class Zombies extends Rectangle{
 	
 //Variables
 	int type;
+	int vx, vy;
 
 	boolean alive;
 
