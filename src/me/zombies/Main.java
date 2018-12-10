@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+//import animate.Circle;
+
 public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //JFrame and JWindow Creations
@@ -133,7 +135,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			super.paintComponent(g);
 			this.requestFocus();
-			
+
 			drawPlayer(g, g2);
 			
 			moveBullets();
@@ -141,13 +143,14 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 		//Draw Zombies
 			for (Zombies z: zombies) {
+				System.out.println(z);
 				z.paint(g, g2);
 			}
 			
 			drawPlayerHealthBar(g, g2);
-			
+
 			drawZombieCounter(g, g2);
-			
+
 		}		
 	}
 
@@ -165,7 +168,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	}
 
-//Move the Player
+	//Move the Player
 	void movePlayer() {
 
 		double vx;
@@ -173,12 +176,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		double moveAngle;
 
 		if (W) {								// <---- Moving Forward
-			
+
 			moveAngle = Math.toRadians(Player.angle-90);
-			
+
 			vx = Player.speed*Math.cos(moveAngle);	// <----Gets the horizontal speed based off the angle
 			vy = Player.speed*Math.sin(moveAngle);	// <----Gets the  vertical  speed based off the angle
-			
+
 			Player.y+=vy; 	// <---- Moves the player in accordance with
 			Player.x+=vx;	//		 it's vertical and horizontal speeds
 		}
@@ -436,7 +439,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+
 		if (e.getKeyCode()==KeyEvent.VK_W) W = false;
 		if (e.getKeyCode()==KeyEvent.VK_A) A = false;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = false;
@@ -479,7 +482,24 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		mouseY = e.getY();
 	}
 
-//UNUSED METHOD
+	private void moveZombies() {
+		for(Zombies z : zombies) {
+			System.out.println(z.vx);
+			System.out.println(z.vy);
+			z.x += z.vx;
+			z.y += z.vy;
+			
+			//bounce off walls
+			//set constant buffer size at top
+			//Buffer image = 50 --> map walls
+/*			if (c.cx-c.r < Buffer) c.vx *= -1; east = width of window + buffer
+			if (c.cy-c.r < 0) c.vy *= -1; south = window height - buffer
+			if (c.cx+c.r > panW) c.vx *= -1;
+			if (c.cy+c.r > panH) c.vy *= -1;*/
+		}
+		//window.repaint();
+	}
+	//UNUSED METHOD
 	public void keyTyped(KeyEvent arg0) {}
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
