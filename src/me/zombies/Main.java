@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Main implements KeyListener, MouseListener, MouseMotionListener{
+public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //JFrame and JWindow Creations
-	final static int WIN = 1000;
+	final static int WIN = 1500;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
 

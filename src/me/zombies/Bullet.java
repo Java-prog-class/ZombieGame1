@@ -7,8 +7,8 @@ import java.awt.Graphics;
 public class Bullet {
 	double cx,cy;			//Center Coordinates
 	int x,y;				//int versions;
-	int r = 2;
-	double speed = 3;		//Speeds
+	int r = Main.WIN/325;
+	double speed = Main.WIN/217;	//Speeds
 	double vx, vy;
 	int dx, dy;
 	double angle;
