@@ -30,7 +30,7 @@ import javax.swing.*;
 public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //JFrame and JWindow Creations
-	final static int WIN = 1500;
+	final static int WIN = 750;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
 
@@ -138,6 +138,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			drawPlayer(g, g2);
 			
+			moveZombies();
 			moveBullets();
 			addBullets(g);
 
@@ -488,6 +489,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			System.out.println(z.vy);
 			z.x += z.vx;
 			z.y += z.vy;
+			
+			//bounce off walls
+			if (z.x-z.r < 0) z.vx *= -1;
+			if (z.y-z.r < 0) z.vy *= -1;
+			if (z.x+z.r > WIN) z.vx *= -1;
+			if (z.y+z.r > WIN) z.vy *= -1;
 			
 			//bounce off walls
 			//set constant buffer size at top
