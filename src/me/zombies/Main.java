@@ -15,7 +15,7 @@ import props.*;
 public class Main implements KeyListener, MouseListener, MouseMotionListener
 {
 	//JFrame and DrawingPanel Creations:
-	final static int WIN = 500;
+	final static int WIN = 750;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
 	
@@ -29,7 +29,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	BasicStroke stroke = new BasicStroke(WIN/300);
 	
 	//Maps:
-	HospitalMap1  hospitalMap1 = new HospitalMap1();
+	ForestMapTest fmt = new ForestMapTest();
 	
 	//Global Variables:
 	static PlayerStats Player = new PlayerStats("Josh");	// <---- Creating the Player Object
@@ -61,11 +61,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		drPanel.addKeyListener(this);							// <---- Adds the keyboard listener to the drPanel
 		drPanel.addMouseListener(this);							// <---- Adds the mouse listener to the drPanel
 		drPanel.addMouseMotionListener(this);					// <---- Adds the mouse motion listener to the drPanel
-		hospitalMap1.addProps();                               // <---- Adds the props found on the map
+		fmt.addProps();                               			// <---- Adds the props found on the map
 		window.add(drPanel);									// <---- Adds the drPanel to the Window
+		fmt.addProps();											// <---- Adds all the Props from ForestMapTest
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visible
-	
 		timer = new Timer(tSpeed, new TimerListener());			// <---- Creates the Timer
 		timer.start();											// <---- Starts the Timer
 	}
@@ -89,16 +89,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			
 			//Draws all the Props:
 			//These must be called first otherwise they draw over the UI and Player:
-			
-			for (Floor f : hospitalMap1.floors)
-			{
-				f.paint(g);
-			}
-			
-			for (Wall w : hospitalMap1.walls)
-			{
-				w.paint(g);
-			}
+			for (Floor f : fmt.floors) f.paint(g);
+			for (Building b : fmt.buildings) b.paint(g);
 			
 			g2.setStroke(stroke);
 			this.requestFocus();
@@ -112,7 +104,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			g.drawImage(img, Player.x, Player.y, Player.width, Player.height, drPanel);							// <---- Draws the Player
 			g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
 			
-			
 			//Draw the Health Bar:
 			int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
 			int BarHeight = WIN/30;
@@ -121,7 +112,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			g.fillRect(BarHeight, BarHeight, BarWidth, BarHeight);
 			
 			g.setColor(Red);										// <---- Red Health Meter
-			int HPBarWidth = (int) (Player.PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Precentage
+			int HPBarWidth = (int) (Player.PercentHP*BarWidth); 	// <---- The Size of the Meter based of the Health Percentage
 			g.fillRect(BarHeight, BarHeight, HPBarWidth, BarHeight);
 			
 			g.setColor(Black);										// <---- Black Boarder
@@ -130,8 +121,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			g2.setFont(HPBar);										// <---- Display Text of HP
 			String HPString = Player.HP+"/"+Player.maxHP;
 			g.drawString(HPString, (int)(WIN/3.6), WIN/16);
+			
 		}		
-
 	}
 	
 	@Override
@@ -151,7 +142,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		if (e.getKeyCode()==KeyEvent.VK_A) A = false;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = false;
 		if (e.getKeyCode()==KeyEvent.VK_D) D = false;	
-		
 	}
 	
 	private class TimerListener implements ActionListener 
@@ -171,81 +161,86 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			//Collision:
 			Rectangle player = new Rectangle(Player.x, Player.y, Player.width, Player.height);
 			
-			//Walls:
-			for (Wall w : hospitalMap1.walls) 
+			//Building Collision:
+			for (Building b : fmt.buildings) 
 			{
-				if (player.intersects(w)) 
+				if (player.intersects(b)) 
 				{
-					if (Player.width <= w.height && D)
+					//Left Side of the Building:
+					if (Player.width <= b.height && D)
 					{ 
-						Player.x -= 5;
+						Player.x -= 3;
 					}
 					
-					if (Player.width <= w.height && A)
+					//Right Side of the Building:
+					if (Player.width <= b.height && A)
 					{
-						Player.x += 5;
+						Player.x += 3;
 					}
 					
-					if (Player.height <= w.width && S)
+					//Top of the Building:
+					if (Player.height <= b.width && S)
 					{
-						Player.y -= 5;
+						Player.y -= 3;
 					}
 					
-					if (Player.height <= w.width && W)
+					//Bottom of the Building:
+					if (Player.height <= b.width && W)
 					{
-						Player.y += 5;
+						Player.y += 3;
 					}
  				}
 			}
 			
-			/*
-			for (River r : forestMapTest.rivers) 
+			//River Collision:
+			for (River r : fmt.rivers) 
 			{
 				if (player.intersects(r)) 
 				{
 					//Left Side of the River:
 					if (Player.width <= r.height && D)
 					{ 
-						Player.x -= 5;
+						Player.x -= 3;
 					}
 					
-					//Right Side of the Building:
+					//Right Side of the River:
 					if (Player.width <= r.height && A)
 					{
-						Player.x += 5;
+						Player.x += 3;
 					}
 					
-					//Top of the Building:
+					//Top of the River:
 					if (Player.height <= r.width && S)
 					{
-						Player.y -= 5;
+						Player.y -= 3;
 					}
 					
-					//Bottom of the Building:
+					//Bottom of the River:
 					if (Player.height <= r.width && W)
 					{
-						Player.y += 5;
+						Player.y += 3;
 					}
  				}
 			}
 			
-			for (Bridge b: forestMapTest.bridges)
+			//Bridge Collision:
+			for (Bridge b: fmt.bridges)
 			{
 				if (player.intersects(b))
 				{
-					//Top of the Building:
+					//Top of the Bridge:
 					if (Player.height <= b.width && S)
 					{
-						Player.y -= 5;
+						Player.y -= 3;
 					}
 					
-					//Bottom of the Building:
+					//Bottom of the Bridge:
 					if (Player.height <= b.width && W)
 					{
-						Player.y += 5;
+						Player.y += 3;
 					}	
 				}
-			}*/
+			}
 			
 			//Rotation:
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location

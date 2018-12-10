@@ -18,20 +18,9 @@ public class ForestMapTest
 	public void addProps()
 	{
 		//Floors:
-		floors.add(new Floor(0, 0, 500, 500, Grass));
+		floors.add(new Floor(0, 0, 750, 750, Grass));
 		
 		//Buildings:
-		buildings.add(new Building(400, 0, 100, 95, CabinRoof));
-		buildings.add(new Building(0, 100, 100, 100, CabinRoof));
-		buildings.add(new Building(0, 300, 100, 100, CabinRoof));
-		
-		//Rivers:
-		//Do NOT let the Rivers and Bridge Intersect:
-		rivers.add(new River(300, 0, 30, 50));
-		rivers.add(new River(300, 90, 30, 110));
-		rivers.add(new River(300, 200, 200, 30));
-		
-		//Bridges:
-		bridges.add(new Bridge(285, 50, 60, 40));
+		buildings.add(new Building(0, 75, 100, 100, CabinRoof));
 	}
 }
