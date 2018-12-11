@@ -2,7 +2,8 @@ package me.zombies;
 
 import java.awt.Rectangle;
 
-class PlayerStats extends Rectangle{
+@SuppressWarnings("serial")
+class PlayerStats extends Rectangle {
 	
 //Variables
 	
@@ -13,7 +14,7 @@ class PlayerStats extends Rectangle{
 	int HP, maxHP, speed;
 	double PercentRatio, PercentHP, angle;
 	
-	PlayerStats(String name){
+	PlayerStats(String name) {
 		
 		x = Main.WIN/2;
 		y = Main.WIN/2;
@@ -29,7 +30,7 @@ class PlayerStats extends Rectangle{
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
 		this.angle = 0.0;
-		this.speed = Main.WIN/300;
+		this.speed = Main.WIN/150;
 		this.armor = "None";
 		this.weapon = "Fist";
 	}
