@@ -22,12 +22,18 @@ public class ForestMapTest
 		floors.add(new Floor(0, 0, 750, 750, Grass));
 		
 		//Buildings:
-		buildings.add(new Building(130, 0, 80, 80, CabinRoof));
-		buildings.add(new Building(0, 200, 80, 80, CabinRoof));
+		buildings.add(new Building(130,   0, 80, 80, CabinRoof));
+		buildings.add(new Building(0,   200, 80, 80, CabinRoof));
+		buildings.add(new Building(0,   450, 80, 80, CabinRoof));
+		buildings.add(new Building(300, 200, 80, 80, CabinRoof));
+		buildings.add(new Building(300, 450, 80, 80, CabinRoof));
+
 		buildings.add(new Building(580, 0, 100, 100, CabinRoof));
 		
-		//Water:
-		waters.add(new Water(400, 500, 350, 350));
 		
+		//Water:
+		waters.add(new Water(400, 600, 350, 350));
+		waters.add(new Water(430, 0, 50, 200));
+		waters.add(new Water(430, 200, 600, 50));
 	}
 }
