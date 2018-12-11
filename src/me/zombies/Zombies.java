@@ -34,13 +34,9 @@ class Zombies extends Rectangle{
 	int HP, maxHP, damage;
 	double PercentRatio, PercentHP, angle;
 
-	Zombies(int type){
+	Zombies(int type) {
 
-		//TODO: Create Zombie Behaviour Here
-
-
-
-		// Creating GREEN Zombies
+	// Creating GREEN Zombies
 		if (type==GREEN) {					
 			this.maxHP= 10;
 			this.HP = 10;
@@ -57,7 +53,7 @@ class Zombies extends Rectangle{
 			this.damage = 1;
 		}
 
-		// Creating BLUE Zombies	
+	// Creating BLUE Zombies	
 		if (type==BLUE) {					
 			this.maxHP= 20;
 			this.HP = 20;
@@ -73,7 +69,7 @@ class Zombies extends Rectangle{
 			this.damage = 5;
 		}
 
-		// Creating RED Zombies
+	// Creating RED Zombies
 		if (type==RED) {					
 			this.maxHP= 50;
 			this.HP = 50;
@@ -89,7 +85,7 @@ class Zombies extends Rectangle{
 			this.damage = 10;
 		}
 
-		// Creating GOLD Zombies		
+	// Creating GOLD Zombies		
 		if (type==GOLD) {					
 			this.maxHP= 100;
 			this.HP = 100;
