@@ -76,7 +76,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		DrawingPanel() 
 		{
 			this.setPreferredSize(new Dimension (WIN, WIN));	// <---- Sets the Size
-			this.setBackground(Grass);							// <---- Sets the background color
 		}
 		
 		@Override
@@ -91,6 +90,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			//These must be called first otherwise they draw over the UI and Player:
 			for (Floor f : fmt.floors) f.paint(g);
 			for (Building b : fmt.buildings) b.paint(g);
+			for (Water w : fmt.waters) w.paint(g);
 			
 			g2.setStroke(stroke);
 			this.requestFocus();
@@ -121,7 +121,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			g2.setFont(HPBar);										// <---- Display Text of HP
 			String HPString = Player.HP+"/"+Player.maxHP;
 			g.drawString(HPString, (int)(WIN/3.6), WIN/16);
-			
 		}		
 	}
 	
@@ -132,7 +131,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
 		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
-		
 	}
 	
 	@Override
@@ -193,30 +191,30 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			}
 			
 			//River Collision:
-			for (River r : fmt.rivers) 
+			for (Water w : fmt.waters) 
 			{
-				if (player.intersects(r)) 
+				if (player.intersects(w)) 
 				{
 					//Left Side of the River:
-					if (Player.width <= r.height && D)
+					if (Player.width <= w.height && D)
 					{ 
 						Player.x -= 3;
 					}
 					
 					//Right Side of the River:
-					if (Player.width <= r.height && A)
+					if (Player.width <= w.height && A)
 					{
 						Player.x += 3;
 					}
 					
 					//Top of the River:
-					if (Player.height <= r.width && S)
+					if (Player.height <= w.width && S)
 					{
 						Player.y -= 3;
 					}
 					
 					//Bottom of the River:
-					if (Player.height <= r.width && W)
+					if (Player.height <= w.width && W)
 					{
 						Player.y += 3;
 					}
@@ -248,29 +246,26 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 			Player.angle = Math.toDegrees(Math.atan2(deltaX, -deltaY)); 	// <---- The angle of rotation
 			
 			//Death Check:
-			if (Player.HP<=0) Player.alive = false;
+			if (Player.HP <= 0) Player.alive = false;
 		
 			window.repaint();
 		}
-		
 	}
 	
-	public void mousePressed(MouseEvent e) {
-		
+	public void mousePressed(MouseEvent e) 
+	{
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = true;
-		
 	}
 
-	public void mouseReleased(MouseEvent e) {
-		
+	public void mouseReleased(MouseEvent e) 
+	{
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
-		
 	}
 
-	public void mouseMoved(MouseEvent e) {
+	public void mouseMoved(MouseEvent e) 
+	{
 		mouseX = e.getX();
 		mouseY = e.getY();
-		
 	}
 
 //UNUSED METHOD
@@ -279,5 +274,4 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseDragged(MouseEvent arg0) {}
-	
 }

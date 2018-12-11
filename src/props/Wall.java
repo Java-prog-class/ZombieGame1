@@ -5,7 +5,7 @@ import java.awt.*;
 public class Wall extends Rectangle
 {
 	//Color of the Wall:
-	Color wallColor;
+	Color color;
 	
 	public Wall(int x, int y, int w, int h, Color c)
 	{
@@ -15,13 +15,13 @@ public class Wall extends Rectangle
 		width = w;
 		height = h;
 		
-		wallColor = c;
+		this.color = c;
 	}
 	
 	public void paint(Graphics g)
 	{
 		//Draws the Wall:
-		g.setColor(wallColor);
+		g.setColor(color);
 		g.fillRect(x, y, width, height);
 	}
 }

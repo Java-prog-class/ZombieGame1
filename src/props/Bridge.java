@@ -5,21 +5,27 @@ import java.awt.*;
 public class Bridge extends Rectangle
 {
 	//Custom Color of the Bridge:
-	Color bridgeColor = new Color(145, 95, 25);
+	Color color;
 	
-	public Bridge(int x, int y, int w, int h)
+	//Type of Bridge 1 is Horizontal, 2 is Vertical:
+	public int type;
+	
+	public Bridge(int x, int y, int w, int h, Color c, int t)
 	{
 		this.x = x;
 		this.y = y;
 		
 		width = w;
 		height = h;
+		
+		this.color = c;
+		this.type = t;
 	}
 	
 	public void paint(Graphics g)
 	{
 		//Draws the Bridge:
-		g.setColor(bridgeColor);
+		g.setColor(color);
 		g.fillRect(x, y, width, height);
 		
 		//Draws the Outline:

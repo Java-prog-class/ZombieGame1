@@ -7,7 +7,7 @@ public class ForestMapTest
 {
 	public ArrayList<Building> buildings = new ArrayList<Building>();
 	public ArrayList<Tree> trees = new ArrayList<Tree>();
-	public ArrayList<River> rivers = new ArrayList<River>();
+	public ArrayList<Water> waters = new ArrayList<Water>();
 	public ArrayList<Bridge> bridges = new ArrayList<Bridge>();
 	public ArrayList<Floor> floors = new ArrayList<Floor>();
 	
@@ -15,12 +15,19 @@ public class ForestMapTest
 	Color CabinRoof = new Color(105, 65, 45);
 	Color Grass = new Color (0, 100, 0);
 	
+	//Adds all Props to the Map:
 	public void addProps()
 	{
 		//Floors:
 		floors.add(new Floor(0, 0, 750, 750, Grass));
 		
 		//Buildings:
-		buildings.add(new Building(0, 75, 100, 100, CabinRoof));
+		buildings.add(new Building(130, 0, 80, 80, CabinRoof));
+		buildings.add(new Building(0, 200, 80, 80, CabinRoof));
+		buildings.add(new Building(580, 0, 100, 100, CabinRoof));
+		
+		//Water:
+		waters.add(new Water(400, 500, 350, 350));
+		
 	}
 }
