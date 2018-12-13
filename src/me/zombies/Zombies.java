@@ -5,6 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 @SuppressWarnings("serial")
 class Zombies extends Rectangle{
@@ -28,19 +33,16 @@ class Zombies extends Rectangle{
 	int type;
 	int vx, vy; //speed
 	int r = 20;
+	BufferedImage Img = null;
 
 	boolean alive;
 
 	int HP, maxHP, damage;
 	double PercentRatio, PercentHP, angle;
 
-	Zombies(int type){
+	Zombies(int type) {
 
-		//TODO: Create Zombie Behaviour Here
-
-
-
-		// Creating GREEN Zombies
+	// Creating GREEN Zombies
 		if (type==GREEN) {					
 			this.maxHP= 10;
 			this.HP = 10;
@@ -55,9 +57,16 @@ class Zombies extends Rectangle{
 				vy = vy * -1;
 			}
 			this.damage = 1;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("GreenZ.png"));
+			} catch (IOException e) {}
+			
+			
 		}
 
-		// Creating BLUE Zombies	
+	// Creating BLUE Zombies	
 		if (type==BLUE) {					
 			this.maxHP= 20;
 			this.HP = 20;
@@ -71,9 +80,14 @@ class Zombies extends Rectangle{
 				vy = vy * -1;
 			}			
 			this.damage = 5;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("BlueZ.png"));
+			} catch (IOException e) {}
 		}
 
-		// Creating RED Zombies
+	// Creating RED Zombies
 		if (type==RED) {					
 			this.maxHP= 50;
 			this.HP = 50;
@@ -87,9 +101,14 @@ class Zombies extends Rectangle{
 				vy = vy * -1;
 			}			
 			this.damage = 10;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("RedZ.png"));
+			} catch (IOException e) {}
 		}
 
-		// Creating GOLD Zombies		
+	// Creating GOLD Zombies		
 		if (type==GOLD) {					
 			this.maxHP= 100;
 			this.HP = 100;
@@ -103,6 +122,11 @@ class Zombies extends Rectangle{
 				vy = vy * -1;
 			}			
 			this.damage = 20;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("GoldZ.png"));
+			} catch (IOException e) {}
 		}
 
 		this.x = (int)(Math.random()*Main.WIN);
@@ -117,16 +141,6 @@ class Zombies extends Rectangle{
 	}
 
 	void paint(Graphics g, Graphics2D g2) {
-
-		g.setColor(Black);
-		g.fillRect(x, y, ZombiesWidth, ZombiesWidth);
-
-		
-		if (this.type==GREEN) g.setColor(Color.GREEN);
-		if (this.type== BLUE) g.setColor(Color.BLUE);
-		if (this.type==  RED) g.setColor(Color.RED);
-		if (this.type== GOLD) g.setColor(Color.YELLOW);
-	
 		
 		g.fillOval(x, y, ZombiesWidth, ZombiesWidth);
 
