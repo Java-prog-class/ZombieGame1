@@ -140,14 +140,7 @@ class Zombies extends Rectangle{
 		this.PercentHP = PercentRatio/100;
 	}
 
-	void paint(Graphics g, Graphics2D g2) {
-		
-		g.fillOval(x, y, ZombiesWidth, ZombiesWidth);
-
-		drawZombiesHealthBar(g, g2, type);
-	}
-
-	void drawZombiesHealthBar (Graphics g, Graphics2D g2, int type) {
+	void drawZombiesHealthBar (Graphics g, Graphics2D g2) {
 		g2.setStroke(ZombiesHPBarStroke);
 
 		int BarWidth = Main.WIN/10; 	// <---- Constant Ratios based off of the Screen Width

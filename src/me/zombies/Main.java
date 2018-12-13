@@ -106,21 +106,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	}
 
-	private void guns() {
-		
-		int ammo = fire;
-		
-		if(fire>0) {
-			
-			if(ammo<pistol.ammo) {
-				bullets.add(new Bullet(Player));
-				ammo--;
-			} 
-			
-		}
-
-	}
-
 	@SuppressWarnings("serial")
 	private class DrawingPanel extends JPanel {
 		DrawingPanel() {
@@ -140,15 +125,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			
 			drawPlayer(g, g2);
 			
-			moveZombies();
-			moveBullets();
 			addBullets(g);
-
-		//Draw Zombies
-			for (Zombies z: zombies) {
-				System.out.println(z);
-				z.paint(g, g2);
-			}
 			
 			drawZombies(g, g2);
 			
@@ -248,17 +225,13 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		g.drawString(HPString, (int)(WIN/3.6), WIN/16);
 	}
 
+//Draw the Zombies
 	void drawZombies(Graphics g, Graphics2D g2) {
 		
 		for (Zombies z: zombies) {
-			
 			g.drawImage(z.Img, z.x, z.y, z.ZombiesWidth, z.ZombiesWidth, drPanel);	
-			
+			z.drawZombiesHealthBar(g, g2);	
 		}
-		
-		
-
-		
 		
 	}
 	
@@ -445,10 +418,15 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	// ------------------------------------------------------
 			Player.PercentRatio = ((Player.HP*100)/Player.maxHP);
 			Player.PercentHP = Player.PercentRatio/100;
+			
+			for (Zombies z: zombies) {
+				z.PercentRatio = ((z.HP*100)/z.maxHP);
+				z.PercentHP = z.PercentRatio/100;
+			}
 				
 			movePlayer();
 			
-//			moveZombies();
+			moveZombies();
 			
 			moveBullets();
 
@@ -475,21 +453,21 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			
 		//Bullet Hit Zombie Check
 			for (Zombies z: zombies) {
-				for (Bullet b: bullets) {
+				for (int j=0; j<bullets.size(); j++) {
 					
+					Bullet b = bullets.get(j);
 					if (z.intersects(b)) {
-						
-//						z.HP-=5;
-//						bullets.remove(b);
-						
-						
+						z.HP-=5;
+						bullets.remove(b);
 					}
+					
 				}
 				
 			}
 
 		//Zombie Death Check
-			for (Zombies z: zombies) {
+			for (int i=0; i<zombies.size(); i++) {
+				Zombies z = zombies.get(i);
 				if (z.HP<=0) {
 					zombies.remove(z);
 					ZombiesCounter--;
