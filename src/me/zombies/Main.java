@@ -69,7 +69,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 //Weapons
 	Weapon pistol = new Weapon(5, 7, "Pistol");
 	int fire;
-
+	int magX, magY;
+	
 	static int mouseX;	// <---- Mouse Variables
 	static int mouseY;
 
@@ -98,8 +99,25 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
 
+		Magazine();
+		
 		timer = new Timer(tSpeed, new TimerListener());			// <---- Creates the Timer
 		timer.start();											// <---- Starts the Timer
+
+	}
+
+	private void guns() {
+		
+		int ammo = fire;
+		
+		if(fire>0) {
+			
+			if(ammo<pistol.ammo) {
+				bullets.add(new Bullet(Player));
+				ammo--;
+			} 
+			
+		}
 
 	}
 
@@ -117,17 +135,26 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			super.paintComponent(g);
 			this.requestFocus();
-
+			
+			drawMagazine(g);
+			
+			drawPlayer(g, g2);
+			
+			moveZombies();
+			moveBullets();
 			addBullets(g);
 
-			drawPlayer(g, g2);
+		//Draw Zombies
+			for (Zombies z: zombies) {
+				System.out.println(z);
+				z.paint(g, g2);
+			}
 			
 			drawZombies(g, g2);
 			
 			drawPlayerHealthBar(g, g2);
 
 			drawZombieCounter(g, g2);
-
 		}		
 	}
 
@@ -255,6 +282,24 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 	}
 	
+	void Magazine() {
+		int magAmmo = pistol.ammo;
+		
+		magX = (int)(Math.random()*WIN);
+		magY = (int)(Math.random()*WIN);
+		
+		if(Player.x == magX) {
+			fire = fire - pistol.ammo;
+		}
+
+	}
+
+	private void drawMagazine(Graphics g) {
+			
+		g.setColor(Color.ORANGE);
+		g.fillRect(magX, magY, 5, 10);
+	}
+
 //Draw the Zombie Counter
 	void drawZombieCounter(Graphics g, Graphics2D g2) {
 
@@ -281,8 +326,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 		//Round 1 Zombie Adding
 		if (Round==1) {
-			for (int i=0; i<5; i++) zombies.add(new Zombies(GreenZombie));
-			ZombiesCounter = 5;
+			for (int i=0; i<10; i++) zombies.add(new Zombies(GreenZombie));
+			ZombiesCounter = 10;
 		}
 
 		//Round 2 Zombie Adding
