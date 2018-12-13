@@ -58,7 +58,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
-	int Round = 0;
+	int Round = 4;
 	int ZombiesCounter = 0;
 	Zombies z;
 
@@ -67,7 +67,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	int deltaY = mouseY-Player.y;
 
 //Weapons
-	Weapon pistol = new Weapon(5, 7, "Pistol");
+	Weapon pistol = new Weapon(5, 7000, "Pistol");
 	int fire;
 	int magX, magY;
 	
@@ -299,70 +299,70 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 		//Round 1 Zombie Adding
 		if (Round==1) {
-			for (int i=0; i<10; i++) zombies.add(new Zombies(GreenZombie));
-			ZombiesCounter = 10;
+			for (int i=0; i<15; i++) zombies.add(new Zombies(GreenZombie));
+			ZombiesCounter = 15;
 		}
 
 		//Round 2 Zombie Adding
 		if (Round==2) {
-			for (int i=0; i<35; i++) zombies.add(new Zombies(GreenZombie));
-			for (int i=0; i<10; i++) zombies.add(new Zombies(BlueZombie));
-			ZombiesCounter = 45;
+			for (int i=0; i<10; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i< 2; i++) zombies.add(new Zombies(BlueZombie));
+			ZombiesCounter = 12;
 		}
 
 		//Round 3 Zombie Adding
 		if (Round==3) {
-			for (int i=0; i<40; i++) zombies.add(new Zombies(GreenZombie));
-			for (int i=0; i<20; i++) zombies.add(new Zombies(BlueZombie));
-			ZombiesCounter = 60;
+			for (int i=0; i<10; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i< 6; i++) zombies.add(new Zombies(BlueZombie));
+			ZombiesCounter = 16;
 		}
 		//Round 4 Zombie Adding
 		if (Round==4) {
-			for (int i=0; i<30; i++) zombies.add(new Zombies(GreenZombie));
-			for (int i=0; i<35; i++) zombies.add(new Zombies(BlueZombie));
-			ZombiesCounter = 65;
+			for (int i=0; i<12; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i< 9; i++) zombies.add(new Zombies(BlueZombie));
+			ZombiesCounter = 21;
 		}
 
 		//Round 5 Zombie Adding
 		if (Round==5) {
-			for (int i=0; i<35; i++) zombies.add(new Zombies(GreenZombie));
-			for (int i=0; i<25; i++) zombies.add(new Zombies(BlueZombie));
+			for (int i=0; i<13; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i<10; i++) zombies.add(new Zombies(BlueZombie));
 			for (int i=0; i< 1; i++) zombies.add(new Zombies(RedZombie));
-			ZombiesCounter = 61;
+			ZombiesCounter = 24;
 		}
 
 		//Round 6 Zombie Adding
 		if (Round==6) {
-			for (int i=0; i<40; i++) zombies.add(new Zombies(GreenZombie));
-			for (int i=0; i<30; i++) zombies.add(new Zombies(BlueZombie));
-			for (int i=0; i< 5; i++) zombies.add(new Zombies(RedZombie));
-			ZombiesCounter = 75;
+			for (int i=0; i<15; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i< 5; i++) zombies.add(new Zombies(BlueZombie));
+			for (int i=0; i< 3; i++) zombies.add(new Zombies(RedZombie));
+			ZombiesCounter = 23;
 		}			
 
 		//Round 7 Zombie Adding
 		if (Round==7) {
-			for (int i=0; i<45; i++) zombies.add(new Zombies(GreenZombie));
-			for (int i=0; i<25; i++) zombies.add(new Zombies(BlueZombie));
-			for (int i=0; i<15; i++) zombies.add(new Zombies(RedZombie));
-			ZombiesCounter = 85;
+			for (int i=0; i<10; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i<10; i++) zombies.add(new Zombies(BlueZombie));
+			for (int i=0; i< 6; i++) zombies.add(new Zombies(RedZombie));
+			ZombiesCounter = 26;
 		}
 
 		//Round 8 Zombie Adding
 		if (Round==8) {
-			for (int i=0; i<25; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i<10; i++) zombies.add(new Zombies(GreenZombie));
 			for (int i=0; i<10; i++) zombies.add(new Zombies(BlueZombie));
 			for (int i=0; i<05; i++) zombies.add(new Zombies(RedZombie));
 			for (int i=0; i<01; i++) zombies.add(new Zombies(GoldZombie));
-			ZombiesCounter = 41;
+			ZombiesCounter = 26;
 		}
 
 		//Round 9 Zombie Adding
 		if (Round==9) {
-			for (int i=0; i<35; i++) zombies.add(new Zombies(GreenZombie));
-			for (int i=0; i<25; i++) zombies.add(new Zombies(BlueZombie));
-			for (int i=0; i<15; i++) zombies.add(new Zombies(RedZombie));
-			for (int i=0; i<05; i++) zombies.add(new Zombies(GoldZombie));
-			ZombiesCounter = 80;
+			for (int i=0; i<10; i++) zombies.add(new Zombies(GreenZombie));
+			for (int i=0; i<10; i++) zombies.add(new Zombies(BlueZombie));
+			for (int i=0; i< 8; i++) zombies.add(new Zombies(RedZombie));
+			for (int i=0; i< 5; i++) zombies.add(new Zombies(GoldZombie));
+			ZombiesCounter = 33;
 		}
 
 		//Round 10 Zombie Adding
@@ -371,7 +371,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			for (int i=0; i<35; i++) zombies.add(new Zombies(BlueZombie));
 			for (int i=0; i<25; i++) zombies.add(new Zombies(RedZombie));
 			for (int i=0; i<10; i++) zombies.add(new Zombies(GoldZombie));
-			ZombiesCounter = 120;
+			ZombiesCounter = 40;
 		}
 
 	}
@@ -426,7 +426,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				
 			movePlayer();
 			
-			moveZombies();
+//			moveZombies();
 			
 			moveBullets();
 
