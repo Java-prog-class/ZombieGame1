@@ -1,5 +1,6 @@
 package me.zombies;
 
+<<<<<<< HEAD
 class PlayerStats 
 {
 	
@@ -9,6 +10,14 @@ class PlayerStats
 	
 	int width = Main.WIN/20;
 	int height = Main.WIN/20;
+=======
+import java.awt.Rectangle;
+
+@SuppressWarnings("serial")
+class PlayerStats extends Rectangle {
+	
+//Variables
+>>>>>>> master
 	
 	boolean alive;
 	
@@ -17,8 +26,20 @@ class PlayerStats
 	int HP, maxHP, speed;
 	double PercentRatio, PercentHP, angle;
 	
+<<<<<<< HEAD
 	PlayerStats(String name)
 	 {
+=======
+	PlayerStats(String name) {
+		
+		x = Main.WIN/2;
+		y = Main.WIN/2;
+		
+		width = Main.WIN/20;
+		height = Main.WIN/20;
+//		height = Main.WIN/15;
+		
+>>>>>>> master
 		this.alive = true;
 		this.name = name;
 		this.maxHP = 20;

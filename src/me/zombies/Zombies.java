@@ -4,120 +4,173 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-class Zombies {
+import javax.imageio.ImageIO;
 
-//Colors
+@SuppressWarnings("serial")
+class Zombies extends Rectangle{
+
+	//Colors
 	Color White = new Color (255, 255, 255);
 	Color Blue = new Color (0, 0, 255);
 	Color Red = new Color (255, 0, 0);
 	Color Black = new Color (0, 0, 0);
 	BasicStroke ZombiesHPBarStroke = new BasicStroke(Main.WIN/500);
-	
-//Zombies Type
+
+	//Zombies Type
 	int GREEN = 1;
 	int BLUE = 2;
 	int RED = 3;
 	int GOLD = 4;
-	
+
 	int ZombiesWidth = Main.WIN/30;
 	
 //Variables
-	int x, y;
-	
-	int width, height;
 	int type;
-	
+	int vx, vy; //speed
+	int r = 20;
+	BufferedImage Img = null;
+
 	boolean alive;
-	
-	int HP, maxHP, speed, damage;
+
+	int HP, maxHP, damage;
 	double PercentRatio, PercentHP, angle;
-	
-	Zombies(int type){
-		
-	//TODO: Create Zombie Behaviour Here
-		
-		
+
+	Zombies(int type) {
 
 	// Creating GREEN Zombies
 		if (type==GREEN) {					
 			this.maxHP= 10;
 			this.HP = 10;
-			this.speed = Main.WIN/1500;
+			//this.speed = Main.WIN/1500;
+			vx = (int)(Math.random()*2) + 8;
+			if(Math.random() > 0.5) {
+				vx = vx * -1;
+			}
+
+			vy = (int)(Math.random()*2) + 8;
+			if(Math.random() > 0.5) {
+				vy = vy * -1;
+			}
 			this.damage = 1;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("GreenZ.png"));
+			} catch (IOException e) {}
+			
+			
 		}
-		
+
 	// Creating BLUE Zombies	
 		if (type==BLUE) {					
 			this.maxHP= 20;
 			this.HP = 20;
-			this.speed = Main.WIN/750;
+			vx = (int)(Math.random()*2) + 6;
+			if(Math.random() > 0.5) {
+				vx = vx * -1;
+			}
+
+			vy = (int)(Math.random()*2) + 6;
+			if(Math.random() > 0.5) {
+				vy = vy * -1;
+			}			
 			this.damage = 5;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("BlueZ.png"));
+			} catch (IOException e) {}
 		}
-		
+
 	// Creating RED Zombies
 		if (type==RED) {					
 			this.maxHP= 50;
 			this.HP = 50;
-			this.speed = Main.WIN/525;
+			vx = (int)(Math.random()*2) + 4;
+			if(Math.random() > 0.5) {
+				vx = vx * -1;
+			}
+
+			vy = (int)(Math.random()*2) + 4;
+			if(Math.random() > 0.5) {
+				vy = vy * -1;
+			}			
 			this.damage = 10;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("RedZ.png"));
+			} catch (IOException e) {}
 		}
-		
+
 	// Creating GOLD Zombies		
 		if (type==GOLD) {					
 			this.maxHP= 100;
 			this.HP = 100;
-			this.speed = Main.WIN/300;
+			vx = (int)(Math.random()*2) + 2;
+			if(Math.random() > 0.5) {
+				vx = vx * -1;
+			}
+
+			vy = (int)(Math.random()*2) + 2;
+			if(Math.random() > 0.5) {
+				vy = vy * -1;
+			}			
 			this.damage = 20;
+			
+		//Load the Sprite
+			this.Img = null;
+			try { this.Img = ImageIO.read(new File("GoldZ.png"));
+			} catch (IOException e) {}
 		}
-		
+
 		this.x = (int)(Math.random()*Main.WIN);
 		this.y = (int)(Math.random()*Main.WIN);
-		
+		this.width = ZombiesWidth;
+		this.height = ZombiesWidth;
+
 		this.type=type;
-		
+
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
-		
 	}
-	
+
 	void paint(Graphics g, Graphics2D g2) {
 		
-		if (this.type==GREEN) g.setColor(Color.GREEN);
-		if (this.type== BLUE) g.setColor(Color.BLUE);
-		if (this.type==  RED) g.setColor(Color.RED);
-		if (this.type== GOLD) g.setColor(Color.YELLOW);
-	
-		
 		g.fillOval(x, y, ZombiesWidth, ZombiesWidth);
-		
+
 		drawZombiesHealthBar(g, g2, type);
 	}
-	
+
 	void drawZombiesHealthBar (Graphics g, Graphics2D g2, int type) {
 		g2.setStroke(ZombiesHPBarStroke);
-		
+
 		int BarWidth = Main.WIN/10; 	// <---- Constant Ratios based off of the Screen Width
 		int BarHeight = Main.WIN/150;
-		
+
 		int BarX = x+(ZombiesWidth/2)-(BarWidth/2);
 		int BarY = y-(Main.WIN/60);
-		
+
 		g.setColor(White);										// <---- White Background
 		g.fillRect(BarX, BarY, BarWidth, BarHeight);
-		
-		
+
+
 		if (this.type==GREEN) g.setColor(Color.GREEN);			// <---- Colored Health Meter
 		if (this.type== BLUE) g.setColor(Color.BLUE);
 		if (this.type==  RED) g.setColor(Color.RED);
 		if (this.type== GOLD) g.setColor(Color.YELLOW);
-					
+
 		int HPBarWidth = (int) (PercentHP*BarWidth); 			// <---- The Size of the Meter based of the Health Precentage
 		g.fillRect(BarX, BarY, HPBarWidth, BarHeight);
-		
+
 		g.setColor(Black);										// <---- Black Boarder
 		g.drawRect(BarX, BarY, BarWidth, BarHeight);		
-		
+
 	}
 
 }
