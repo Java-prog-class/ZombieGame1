@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 public class Bullet extends Rectangle {
 	
 	double cx,cy;			//Center Coordinates
-	int x,y;				//int versions;
 	int r = Main.WIN/325;
 	double speed = Main.WIN/217;	//Speeds
 	double vx, vy;

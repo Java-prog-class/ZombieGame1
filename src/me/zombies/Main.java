@@ -74,10 +74,10 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	static int mouseY;
 
 	static boolean W = false,	// <---- Input variables for the player.
-			A = false,	//		 These variables are set to false,
-			S = false,	//       when the key is pressed or mouse
-			D = false,	//		 button is clicked, the corresponding
-			M1 = false,	//		 variable is set to true
+			A = false,			//		 These variables are set to false,
+			S = false,			//       when the key is pressed or mouse
+			D = false,			//		 button is clicked, the corresponding
+			M1 = false,			//		 variable is set to true
 			M2 = false;
 
 	Timer timer;	// <---- Initializes the Timer
@@ -121,11 +121,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			addBullets(g);
 
 			drawPlayer(g, g2);
-		
-		//Draw Zombies
-			for (Zombies z: zombies) {
-				z.paint(g, g2);
-			}
+			
+			drawZombies(g, g2);
 			
 			drawPlayerHealthBar(g, g2);
 
@@ -224,6 +221,20 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		g.drawString(HPString, (int)(WIN/3.6), WIN/16);
 	}
 
+	void drawZombies(Graphics g, Graphics2D g2) {
+		
+		for (Zombies z: zombies) {
+			
+			g.drawImage(z.Img, z.x, z.y, z.ZombiesWidth, z.ZombiesWidth, drPanel);	
+			
+		}
+		
+		
+
+		
+		
+	}
+	
 //Guns
 	private void guns() {
 		
@@ -392,7 +403,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				
 			movePlayer();
 			
-			moveZombies();
+//			moveZombies();
 			
 			moveBullets();
 
@@ -420,10 +431,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		//Bullet Hit Zombie Check
 			for (Zombies z: zombies) {
 				for (Bullet b: bullets) {
-				
+					
 					if (z.intersects(b)) {
 						
-						System.out.println("HIT");
+//						z.HP-=5;
+//						bullets.remove(b);
+						
 						
 					}
 				}
