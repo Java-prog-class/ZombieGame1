@@ -27,7 +27,7 @@ import javax.swing.*;
 public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //JFrame and JWindow Creations
-	final static int WIN = 1500;
+	final static int WIN = 750;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
 
@@ -106,20 +106,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	}
 
-	private void guns() {
-		
-		int ammo = fire;
-		
-		if(fire>0) {
-			
-			if(ammo<pistol.ammo) {
-				bullets.add(new Bullet(Player));
-				ammo--;
-			} 
-			
-		}
-
-	}
 
 	@SuppressWarnings("serial")
 	private class DrawingPanel extends JPanel {
