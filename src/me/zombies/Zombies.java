@@ -39,6 +39,7 @@ class Zombies extends Rectangle{
 
 	int HP, maxHP, damage;
 	double PercentRatio, PercentHP, angle;
+	long lastHit = 0L;
 
 	Zombies(int type) {
 
