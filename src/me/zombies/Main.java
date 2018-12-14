@@ -129,9 +129,9 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			this.requestFocus();
 
 			drawMagazine(g);
-
-			drawPlayer(g, g2);
-
+			
+			drawPlayer(g2);
+			
 			addBullets(g);
 
 			drawZombies(g, g2);
@@ -147,7 +147,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 
 //Draw the Player
-	void drawPlayer(Graphics g, Graphics2D g2) {
+	void drawPlayer(Graphics2D g2) {
 
 		BufferedImage PlayerImg = null;
 		try { PlayerImg = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
@@ -457,7 +457,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			movePlayer();
 
-			//			moveZombies();
+			moveZombies();
 
 			moveBullets();
 
@@ -483,15 +483,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			//Bullet Hit Zombie Check
 			for (Zombies z: zombies) {
 				for (int j=0; j<bullets.size(); j++) {
-					
 					Bullet b = bullets.get(j);
 					if (z.intersects(b)) {
 						z.HP-=5;
 						bullets.remove(b);
 					}
-					
 				}
-				
 			}
 
 			//Zombie Death Check

@@ -38,7 +38,8 @@ class Zombies extends Rectangle{
 	BufferedImage Img = null;
 
 	boolean alive;
-
+	double PercentRatio;
+	double PercentHP;
 	int HP, maxHP, damage;
 	long lastHit = 0L;
 
