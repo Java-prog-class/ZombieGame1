@@ -58,7 +58,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
-	int Round = 4;
+	int Round = 0;
 	int ZombiesCounter = 0;
 	Zombies z;
 
@@ -123,7 +123,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			
 			drawMagazine(g);
 			
-			drawPlayer(g, g2);
+			drawPlayer(g2);
 			
 			addBullets(g);
 			
@@ -137,14 +137,14 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 
 //Draw the Player
-	void drawPlayer(Graphics g, Graphics2D g2) {
+	void drawPlayer(Graphics2D g2) {
 
 		BufferedImage PlayerImg = null;
 		try { PlayerImg = ImageIO.read(new File("Player.png")); 	// <---- Loads the player Sprite file
 		} catch (IOException e) {}
 
 		g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
-		g.drawImage(PlayerImg, Player.x, Player.y,Player.width, Player.height, drPanel);					// <---- Draws the Player
+		g2.drawImage(PlayerImg, Player.x, Player.y,Player.width, Player.height, drPanel);					// <---- Draws the Player
 		g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
 
 	}
@@ -229,7 +229,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	void drawZombies(Graphics g, Graphics2D g2) {
 		
 		for (Zombies z: zombies) {
+			//g2.rotate(z.angle);
+			g2.rotate(z.angle, z.x+(z.width/2), z.y+(z.height/2));
 			g.drawImage(z.Img, z.x, z.y, z.ZombiesWidth, z.ZombiesWidth, drPanel);	
+			g2.rotate(-z.angle, z.x+(z.width/2), z.y+(z.height/2));
+			//g2.rotate(-z.angle);
 			z.drawZombiesHealthBar(g, g2);	
 		}
 		
@@ -405,7 +409,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			if (z.y-z.r < 0) z.vy *= -1;
 			if (z.x+z.r > WIN) z.vx *= -1;
 			if (z.y+z.r > WIN) z.vy *= -1;
-			
+			z.angle = Math.atan2(z.vy, z.vx); // angle facing in radiansa
 		}
 	}
 
@@ -426,7 +430,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				
 			movePlayer();
 			
-//			moveZombies();
+			moveZombies();
 			
 			moveBullets();
 
