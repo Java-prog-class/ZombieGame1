@@ -139,10 +139,14 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			drawPlayerHealthBar(g, g2);
 
 			drawZombieCounter(g, g2);
+>>>>>>> master
 		}		
 	}
 
 
+<<<<<<< HEAD
+	//Draw the Player
+=======
 //Draw the Player
 	void drawPlayer(Graphics g, Graphics2D g2) {
 
