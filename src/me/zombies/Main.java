@@ -78,6 +78,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	int fire;
 	int magX, magY;
 	int ammo = pistol.ammo-fire;
+	static boolean R = false;
+	String str = null;
 
 	static int mouseX;	// <---- Mouse Variables
 	static int mouseY;
@@ -107,8 +109,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
 
-		Magazine();
-
 		timer = new Timer(tSpeed, new TimerListener());			// <---- Creates the Timer
 		timer.start();											// <---- Starts the Timer
 
@@ -127,8 +127,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			super.paintComponent(g);
 			this.requestFocus();
-
-			drawMagazine(g);
 			
 			drawPlayer(g2);
 			
@@ -251,7 +249,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	//Guns
 	private void guns() {
-
+		
 		if(fire>=0) {
 			if(ammo>0) {
 				if(ammo<=pistol.ammo) {
@@ -260,6 +258,13 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				} 	
 			}
 		}
+		
+		if(R) {
+			ammo = pistol.ammo;
+			R = false;
+			str = "0"+ammo;
+		}
+
 	}
 
 	//Draw Bullets
@@ -269,29 +274,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 	}
 
-	void Magazine() {
-		int magAmmo = pistol.ammo;
-
-		magX = (int)(Math.random()*WIN);
-		magY = (int)(Math.random()*WIN);
-
-		if(Player.x == magX) {
-			fire = fire - pistol.ammo;
-		}
-
-	}
-
-	private void drawMagazine(Graphics g) {
-
-		g.setColor(Color.ORANGE);
-		g.fillRect(magX, magY, 5, 10);
-	}
-
-
 	void drawAmmoCounter(Graphics g, Graphics2D g2) {
 		FontMetrics fontMetrics = g2.getFontMetrics(ZombiesCounterFont);
-
-		String str = null;
 
 		if (ammo<10) str = "0"+ammo;  	// <---- Puts a '0' in front of single-digit numers)
 
@@ -522,6 +506,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
 		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
+		if (e.getKeyCode()==KeyEvent.VK_R) R = true;
 
 	}
 
