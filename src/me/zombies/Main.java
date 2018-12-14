@@ -27,7 +27,7 @@ import javax.swing.*;
 public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //JFrame and JWindow Creations
-	final static int WIN = 1500;
+	final static int WIN = 750;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
 
@@ -204,7 +204,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	}
 
-//Draw the Health Bar
+//Draw the Player Health Bar
 	void drawPlayerHealthBar(Graphics g, Graphics2D g2) {
 
 		int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
@@ -409,6 +409,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 	}
 
+//Timer
 	private class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -416,20 +417,20 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	// ------------------------------------------------------		
 	// ----- Stuff that happens every frame of the game -----
 	// ------------------------------------------------------
+			
+		//Fixes the Player's Health Bar
 			Player.PercentRatio = ((Player.HP*100)/Player.maxHP);
 			Player.PercentHP = Player.PercentRatio/100;
 			
+		//Fixes the Zombies' Health Bar
 			for (Zombies z: zombies) {
 				z.PercentRatio = ((z.HP*100)/z.maxHP);
 				z.PercentHP = z.PercentRatio/100;
 			}
 				
 			movePlayer();
-			
-//			moveZombies();
-			
+			moveZombies();
 			moveBullets();
-
 
 		//Rotation of Player
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
@@ -438,14 +439,13 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		
 		//Player Death Check
 			if (Player.HP<=0) Player.alive = false;
-
 			
 		//Zombie Hit Player Check
 			for (Zombies z: zombies) {
 				if (z.intersects(Player)) {
 					long now = System.currentTimeMillis();
-					if ((now-lastHit)>1000) {
-						lastHit = now;
+					if ((now-z.lastHit)>1000) {
+						z.lastHit = now;
 						Player.HP-=z.damage;
 					}
 				}
@@ -454,15 +454,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		//Bullet Hit Zombie Check
 			for (Zombies z: zombies) {
 				for (int j=0; j<bullets.size(); j++) {
-					
 					Bullet b = bullets.get(j);
 					if (z.intersects(b)) {
 						z.HP-=5;
 						bullets.remove(b);
 					}
-					
 				}
-				
 			}
 
 		//Zombie Death Check
