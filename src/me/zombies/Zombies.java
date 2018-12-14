@@ -16,7 +16,7 @@ class Zombies extends Rectangle{
 
 	//Colors
 	Color White = new Color (255, 255, 255);
-	Color Blue = new Color (0, 0, 255);
+	Color Blue = new Color (100, 100, 255);
 	Color Red = new Color (255, 0, 0);
 	Color Black = new Color (0, 0, 0);
 	BasicStroke ZombiesHPBarStroke = new BasicStroke(Main.WIN/500);
@@ -140,14 +140,7 @@ class Zombies extends Rectangle{
 		this.PercentHP = PercentRatio/100;
 	}
 
-	void paint(Graphics g, Graphics2D g2) {
-		
-		g.fillOval(x, y, ZombiesWidth, ZombiesWidth);
-
-		drawZombiesHealthBar(g, g2, type);
-	}
-
-	void drawZombiesHealthBar (Graphics g, Graphics2D g2, int type) {
+	void drawZombiesHealthBar (Graphics g, Graphics2D g2) {
 		g2.setStroke(ZombiesHPBarStroke);
 
 		int BarWidth = Main.WIN/10; 	// <---- Constant Ratios based off of the Screen Width
@@ -156,7 +149,7 @@ class Zombies extends Rectangle{
 		int BarX = x+(ZombiesWidth/2)-(BarWidth/2);
 		int BarY = y-(Main.WIN/60);
 
-		g.setColor(White);										// <---- White Background
+		g.setColor(Black);										// <---- White Background
 		g.fillRect(BarX, BarY, BarWidth, BarHeight);
 
 
