@@ -65,7 +65,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	//Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
-	int Round = 4;
+	int Round = 0;
 	int ZombiesCounter = 0;
 	Zombies z;
 
@@ -145,7 +145,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}		
 	}
 
-	//Draw the Player
+
+//Draw the Player
 	void drawPlayer(Graphics g, Graphics2D g2) {
 
 		BufferedImage PlayerImg = null;
@@ -153,7 +154,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		} catch (IOException e) {}
 
 		g2.rotate(Math.toRadians(Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));		// <---- Rotates the whole screen	
-		g.drawImage(PlayerImg, Player.x, Player.y,Player.width, Player.height, drPanel);					// <---- Draws the Player
+		g2.drawImage(PlayerImg, Player.x, Player.y,Player.width, Player.height, drPanel);					// <---- Draws the Player
 		g2.rotate(Math.toRadians(-Player.angle), Player.x+(Player.width/2), Player.y+(Player.height/2));	// <---- Rotates the whole screen back
 
 	}
@@ -213,7 +214,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	}
 
-	//Draw the Health Bar
+//Draw the Player Health Bar
 	void drawPlayerHealthBar(Graphics g, Graphics2D g2) {
 
 		int BarWidth = WIN/3; 	// <---- Constant Ratios based off of the Screen Width
@@ -238,7 +239,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	void drawZombies(Graphics g, Graphics2D g2) {
 
 		for (Zombies z: zombies) {
+			//g2.rotate(z.angle);
+			g2.rotate(z.angle, z.x+(z.width/2), z.y+(z.height/2));
 			g.drawImage(z.Img, z.x, z.y, z.ZombiesWidth, z.ZombiesWidth, drPanel);	
+			g2.rotate(-z.angle, z.x+(z.width/2), z.y+(z.height/2));
+			//g2.rotate(-z.angle);
 			z.drawZombiesHealthBar(g, g2);	
 		}
 
@@ -427,20 +432,24 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			if (z.y-z.r < 0) z.vy *= -1;
 			if (z.x+z.r > WIN) z.vx *= -1;
 			if (z.y+z.r > WIN) z.vy *= -1;
-
+			z.angle = Math.atan2(z.vy, z.vx); // angle facing in radiansa
 		}
 	}
 
+//Timer
 	private class TimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			// ------------------------------------------------------		
-			// ----- Stuff that happens every frame of the game -----
-			// ------------------------------------------------------
+	// ------------------------------------------------------		
+	// ----- Stuff that happens every frame of the game -----
+	// ------------------------------------------------------
+			
+		//Fixes the Player's Health Bar
 			Player.PercentRatio = ((Player.HP*100)/Player.maxHP);
 			Player.PercentHP = Player.PercentRatio/100;
-
+			
+		//Fixes the Zombies' Health Bar
 			for (Zombies z: zombies) {
 				z.PercentRatio = ((z.HP*100)/z.maxHP);
 				z.PercentHP = z.PercentRatio/100;
@@ -452,22 +461,20 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			moveBullets();
 
-
-			//Rotation of Player
+		//Rotation of Player
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaY, deltaX))+90; 	// <---- The angle of rotation
 
 			//Player Death Check
 			if (Player.HP<=0) Player.alive = false;
-
-
-			//Zombie Hit Player Check
+			
+		//Zombie Hit Player Check
 			for (Zombies z: zombies) {
 				if (z.intersects(Player)) {
 					long now = System.currentTimeMillis();
-					if ((now-lastHit)>1000) {
-						lastHit = now;
+					if ((now-z.lastHit)>1000) {
+						z.lastHit = now;
 						Player.HP-=z.damage;
 					}
 				}
@@ -476,15 +483,15 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			//Bullet Hit Zombie Check
 			for (Zombies z: zombies) {
 				for (int j=0; j<bullets.size(); j++) {
-
+					
 					Bullet b = bullets.get(j);
 					if (z.intersects(b)) {
 						z.HP-=5;
 						bullets.remove(b);
 					}
-
+					
 				}
-
+				
 			}
 
 			//Zombie Death Check

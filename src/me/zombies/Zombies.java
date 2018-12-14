@@ -29,6 +29,8 @@ class Zombies extends Rectangle{
 
 	int ZombiesWidth = Main.WIN/30;
 	
+	double angle;
+	
 //Variables
 	int type;
 	int vx, vy; //speed
@@ -38,7 +40,7 @@ class Zombies extends Rectangle{
 	boolean alive;
 
 	int HP, maxHP, damage;
-	double PercentRatio, PercentHP, angle;
+	long lastHit = 0L;
 
 	Zombies(int type) {
 
