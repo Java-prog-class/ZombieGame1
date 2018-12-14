@@ -40,7 +40,7 @@ class Zombies extends Rectangle{
 	boolean alive;
 
 	int HP, maxHP, damage;
-	double PercentRatio, PercentHP;
+	long lastHit = 0L;
 
 	Zombies(int type) {
 
