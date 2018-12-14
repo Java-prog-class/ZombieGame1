@@ -457,7 +457,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			movePlayer();
 
-			//			moveZombies();
+			moveZombies();
 
 			moveBullets();
 
