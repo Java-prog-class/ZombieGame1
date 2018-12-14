@@ -4,21 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-
-
-public class Bullet {
-	double cx,cy;//Centre Coordinates
-	int x,y;	//int versions;
-	//int mx, my;
-	int r = 2;
-	double speed = 3;//Speeds
+@SuppressWarnings("serial")
+public class Bullet extends Rectangle {
+	
+	double cx,cy;			//Center Coordinates
+	int r = Main.WIN/325;
+	double speed = Main.WIN/217;	//Speeds
 	double vx, vy;
 	int dx, dy;
 	double angle;
-	
-	
 
-	Bullet(PlayerStats player){
+	Bullet(PlayerStats player) {
 		
 		dx = Main.mouseX - (player.x+player.width/2);
 		dy = Main.mouseY - (player.y+player.height/2);
@@ -30,7 +26,11 @@ public class Bullet {
 		cx = player.x+player.width/2;
 		cy = player.y+player.height/2;
 		
-
+		width = r*2;
+		height = width;
+		
+		x = (int) cx;
+		y = (int) cy;
 	}
 
 	void move() {
@@ -43,6 +43,6 @@ public class Bullet {
 
 	void paint(Graphics g) {		
 		g.setColor(Color.black);
-		g.fillOval(x, y, r*2, r*2);		
+		g.fillOval(x, y, width, height);		
 	}
 }

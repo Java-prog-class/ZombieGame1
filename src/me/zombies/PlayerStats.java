@@ -1,14 +1,11 @@
 package me.zombies;
 
-class PlayerStats 
-{
+import java.awt.Rectangle;
+
+@SuppressWarnings("serial")
+class PlayerStats extends Rectangle {
 	
-	//Variables
-	int x = Main.WIN/2; //By Default the Player Positions are in the Center of the Window.
-	int y = Main.WIN/2;
-	
-	int width = Main.WIN/20;
-	int height = Main.WIN/20;
+//Variables
 	
 	boolean alive;
 	
@@ -17,8 +14,15 @@ class PlayerStats
 	int HP, maxHP, speed;
 	double PercentRatio, PercentHP, angle;
 	
-	PlayerStats(String name)
-	 {
+	PlayerStats(String name) {
+		
+		x = Main.WIN/2;
+		y = Main.WIN/2;
+		
+		width = Main.WIN/20;
+		height = Main.WIN/20;
+//		height = Main.WIN/15;
+		
 		this.alive = true;
 		this.name = name;
 		this.maxHP = 20;
