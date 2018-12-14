@@ -33,6 +33,7 @@ class Zombies extends Rectangle{
 	int type;
 	int vx, vy; //speed
 	int r = 20;
+	int score;
 	BufferedImage Img = null;
 
 	boolean alive;
@@ -47,6 +48,7 @@ class Zombies extends Rectangle{
 		if (type==GREEN) {					
 			this.maxHP= 10;
 			this.HP = 10;
+			this.score = 10;
 			//this.speed = Main.WIN/1500;
 			vx = (int)(Math.random()*2) + 8;
 			if(Math.random() > 0.5) {
@@ -71,6 +73,7 @@ class Zombies extends Rectangle{
 		if (type==BLUE) {					
 			this.maxHP= 20;
 			this.HP = 20;
+			this.score = 50;
 			vx = (int)(Math.random()*2) + 6;
 			if(Math.random() > 0.5) {
 				vx = vx * -1;
@@ -92,6 +95,7 @@ class Zombies extends Rectangle{
 		if (type==RED) {					
 			this.maxHP= 50;
 			this.HP = 50;
+			this.score = 75;
 			vx = (int)(Math.random()*2) + 4;
 			if(Math.random() > 0.5) {
 				vx = vx * -1;
@@ -113,6 +117,7 @@ class Zombies extends Rectangle{
 		if (type==GOLD) {					
 			this.maxHP= 100;
 			this.HP = 100;
+			this.score = 100;
 			vx = (int)(Math.random()*2) + 2;
 			if(Math.random() > 0.5) {
 				vx = vx * -1;
