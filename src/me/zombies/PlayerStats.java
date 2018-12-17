@@ -14,7 +14,7 @@ class PlayerStats extends Rectangle {
 	int HP, maxHP, speed;
 	double PercentRatio, PercentHP, angle;
 	
-	PlayerStats(String name) {
+	PlayerStats(String name, int round) {
 		
 		x = Main.WIN/2;
 		y = Main.WIN/2;
@@ -26,6 +26,7 @@ class PlayerStats extends Rectangle {
 		this.alive = true;
 		this.name = name;
 		this.maxHP = 20;
+		//if ---
 		this.HP = 20;
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;

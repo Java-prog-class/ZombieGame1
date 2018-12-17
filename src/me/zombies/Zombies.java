@@ -41,6 +41,9 @@ class Zombies extends Rectangle{
 
 	int HP, maxHP, damage;
 	long lastHit = 0L;
+	public int PercentRatio;
+	public int PercentHP;
+	int direction;
 
 	Zombies(int type) {
 
@@ -140,6 +143,8 @@ class Zombies extends Rectangle{
 
 		this.PercentRatio = ((this.HP*100)/this.maxHP);
 		this.PercentHP = PercentRatio/100;
+		
+		this.angle = Math.atan2(this.vy, this.vx);
 	}
 
 	void drawZombiesHealthBar (Graphics g, Graphics2D g2) {
