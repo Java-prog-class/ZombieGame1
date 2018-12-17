@@ -54,6 +54,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 //Global Variables
 	PlayerStats Player = new PlayerStats("Josh");			// <---- Creating the Player Object
 	int Score = 0;
+	int Round = 0;
 	
 //Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
@@ -102,7 +103,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
 
-		Magazine();
+//		Magazine();
 		
 		gameTimer = new Timer(tSpeed, new GameTimerListener());		// <---- Creates the Main Game Timer
 		deathTimer = new Timer(tSpeed, new DeathTimerListener());	// <---- Creates the Death Timer
@@ -124,8 +125,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			super.paintComponent(g);
 			this.requestFocus();
 			
-			drawMagazine(g);
-			drawPlayer(g, g2);
+//			drawMagazine(g);
+			drawPlayer(g2);
 			addBullets(g);
 			drawZombies(g, g2);
 			drawPlayerHealthBar(g, g2);
