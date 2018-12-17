@@ -27,7 +27,7 @@ import javax.swing.*;
 public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //JFrame and JWindow Creations
-	final static int WIN = 700;
+	final static int WIN = 1500;
 	static JFrame window;
 	DrawingPanel drPanel = new DrawingPanel();
 
@@ -54,7 +54,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 //Global Variables
 	PlayerStats Player = new PlayerStats("Josh");			// <---- Creating the Player Object
 	int Score = 0;
-	int Round = 9;
+	int Round = 3;
 	
 //Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();

@@ -9,7 +9,7 @@ public class Bullet extends Rectangle {
 	
 	double cx,cy;			//Center Coordinates
 	int r = Main.WIN/325;
-	double speed = Main.WIN/20;	//Speeds
+	double speed = 35;	//Speeds
 	double vx, vy;
 	int dx, dy;
 	double angle;

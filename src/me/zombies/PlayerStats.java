@@ -19,8 +19,8 @@ class PlayerStats extends Rectangle {
 		x = Main.WIN/2;
 		y = Main.WIN/2;
 		
-		width = Main.WIN/20;
-		height = Main.WIN/20;
+		width = 35;
+		height = 35;
 		
 		this.alive = true;
 		this.name = name;
