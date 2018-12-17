@@ -39,6 +39,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	Font HPBarFont = new Font("Arial", Font.PLAIN, WIN/30);
 	Font ZombiesCounterFont = new Font("Arial", Font.BOLD, WIN/15);
+	Font GameOverFont = new Font("Arial", Font.BOLD, 200);
 	BasicStroke stroke = new BasicStroke(WIN/300);
 	
 //Variables for shooting
@@ -51,9 +52,9 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	int GoldZombie =  4;
 
 //Global Variables
-	int Round = 5;
-	PlayerStats Player = new PlayerStats("Josh", Round);			// <---- Creating the Player Object
-
+	PlayerStats Player = new PlayerStats("Josh");			// <---- Creating the Player Object
+	int Score = 0;
+	
 //Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
 	int ZombiesCounter = 0;
@@ -81,9 +82,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				  M1 = false,	//		 variable is set to true
 				  M2 = false;
 
-	Timer timer;	// <---- Initializes the Timer
+	Timer gameTimer;	// <---- Initializes the Timers
+	Timer deathTimer;
 	int tSpeed = 1;	// <---- The Timer's Speed
-	long lastHit = 0L;
+	long lastHit = 0L, deathTime = 0L;
+	boolean showGameOverScreen = false;
 
 	public static void main (String [] args) {new Main();}
 
@@ -99,8 +102,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
 
-		timer = new Timer(tSpeed, new TimerListener());			// <---- Creates the Timer
-		timer.start();											// <---- Starts the Timer
+		Magazine();
+		
+		gameTimer = new Timer(tSpeed, new GameTimerListener());		// <---- Creates the Main Game Timer
+		deathTimer = new Timer(tSpeed, new DeathTimerListener());	// <---- Creates the Death Timer
+		gameTimer.start();											// <---- Starts the Main Game Timer
 
 	}
 
@@ -118,13 +124,20 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			super.paintComponent(g);
 			this.requestFocus();
 			
-			drawPlayer(g2);
+			drawMagazine(g);
+			drawPlayer(g, g2);
 			addBullets(g);
 			drawZombies(g, g2);
 			drawPlayerHealthBar(g, g2);
-			drawAmmoCounter(g, g2);
 			drawZombieCounter(g, g2);
-
+			
+			if (!Player.alive) {
+				playerDied(g, g2);
+			}
+			
+			if (showGameOverScreen) {
+				drawGameOverScreen(g, g2);
+			}
 		}		
 	}
 
@@ -416,8 +429,53 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 	}
 
-//Timer
-	private class TimerListener implements ActionListener {
+//Death animation
+	private void playerDied(Graphics g, Graphics2D g2) {
+		FontMetrics fontMetrics = g2.getFontMetrics(GameOverFont);
+		String str = "YOU DIED";
+		
+		int stringWidth = fontMetrics.stringWidth(str);
+		int stringHeight = fontMetrics.getAscent();
+		int stringX = (WIN/2) - (stringWidth/2);
+		int stringY = (WIN/2) - (stringHeight/2);
+		
+		g.setFont(GameOverFont);
+		g.setColor(Red);
+		g.drawString(str, stringX, stringY);
+		
+	}
+
+//Game Over Screen
+	private void drawGameOverScreen(Graphics g, Graphics2D g2) {
+		FontMetrics fontMetrics = g2.getFontMetrics(GameOverFont);
+		
+		
+		String str1 = "FINAL SCORE:";
+		String str2 = ""+Score;
+		
+		int stringHeight = fontMetrics.getAscent();
+		int string1Width = fontMetrics.stringWidth(str1);		
+		int string2Width = fontMetrics.stringWidth(str2);
+		
+		int string1X = (WIN/2) - (string1Width/2);
+		int string2X = (WIN/2) - (string2Width/2);
+		
+		int string1Y = 200;
+		int string2Y = 500;
+		
+		g.setColor(Black);
+		g.fillRect(0, 0, WIN, WIN);
+		
+		g.setColor(Red);
+		g.setFont(GameOverFont);
+		
+		g.drawString(str1, string1X, string1Y);
+		g.drawString(str2, string2X, string2Y);
+	}
+	
+	
+//Game Timer
+	private class GameTimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
@@ -445,11 +503,16 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaY, deltaX))+90; 	// <---- The angle of rotation
-
-			//Player Death Check
-			if (Player.HP<=0) Player.alive = false;
-
-			//Zombie Hit Player Check
+		
+		//Player Death Check
+			if (Player.HP<=0) {
+				Player.alive = false;
+				deathTime = System.currentTimeMillis();
+				deathTimer.start();
+				gameTimer.stop();
+			}
+			
+		//Zombie Hit Player Check
 			for (Zombies z: zombies) {
 				if (z.intersects(Player)) {
 					long now = System.currentTimeMillis();
@@ -466,6 +529,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 					Bullet b = bullets.get(j);
 					if (z.intersects(b)) {
 						z.HP-=5;
+						Score+=z.score;
 						bullets.remove(b);
 					}
 				}
@@ -488,6 +552,21 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 	}
 
+//Game Over Timer
+	private class DeathTimerListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			long now = System.currentTimeMillis();
+			
+			if (now>=deathTime+2000) showGameOverScreen = true;
+			
+			moveZombies();
+			moveBullets();
+			window.repaint();
+			
+		}
+		
+	}
 // -------------------------
 // ----- Player Inputs -----
 // -------------------------
