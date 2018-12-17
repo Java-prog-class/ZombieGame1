@@ -39,7 +39,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	Font HPBarFont = new Font("Arial", Font.PLAIN, WIN/30);
 	Font ZombiesCounterFont = new Font("Arial", Font.BOLD, WIN/15);
-	Font GameOverFont = new Font("Arial", Font.BOLD, 200);
+	Font GameOverFont = new Font("Arial", Font.BOLD, (int)(WIN/7.5));
 	BasicStroke stroke = new BasicStroke(WIN/300);
 	
 //Variables for shooting
@@ -54,7 +54,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 //Global Variables
 	PlayerStats Player = new PlayerStats("Josh");			// <---- Creating the Player Object
 	int Score = 0;
-	int Round = 0;
+	int Round = 9;
 	
 //Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
@@ -85,7 +85,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	Timer gameTimer;	// <---- Initializes the Timers
 	Timer deathTimer;
-	int tSpeed = 1;	// <---- The Timer's Speed
+	int tSpeed = 1;		// <---- The Timer's Speed
+	
 	long lastHit = 0L, deathTime = 0L;
 	boolean showGameOverScreen = false;
 
@@ -454,15 +455,14 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		String str1 = "FINAL SCORE:";
 		String str2 = ""+Score;
 		
-		int stringHeight = fontMetrics.getAscent();
 		int string1Width = fontMetrics.stringWidth(str1);		
 		int string2Width = fontMetrics.stringWidth(str2);
 		
 		int string1X = (WIN/2) - (string1Width/2);
 		int string2X = (WIN/2) - (string2Width/2);
 		
-		int string1Y = 200;
-		int string2Y = 500;
+		int string1Y = (int)(WIN/7.5);
+		int string2Y = WIN/3;
 		
 		g.setColor(Black);
 		g.fillRect(0, 0, WIN, WIN);
@@ -500,7 +500,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			moveBullets();
 
-			//Rotation of Player
+		//Rotation of Player
 			int deltaX = mouseX-Player.x; 									// <---- Subtracting the Player location from the Mouse Location
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaY, deltaX))+90; 	// <---- The angle of rotation
@@ -524,7 +524,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				}
 			}
 
-			//Bullet Hit Zombie Check
+		//Bullet Hit Zombie Check
 			for (Zombies z: zombies) {
 				for (int j=0; j<bullets.size(); j++) {
 					Bullet b = bullets.get(j);
@@ -536,7 +536,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				}
 			}
 
-			//Zombie Death Check
+		//Zombie Death Check
 			for (int i=0; i<zombies.size(); i++) {
 				Zombies z = zombies.get(i);
 				if (z.HP<=0) {
@@ -545,10 +545,10 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 				}
 			}
 
-			//Zombies Round Check
+		//Zombies Round Check
 			if (ZombiesCounter<=0) addZombies();
 
-			//Repaints the window (every frame)
+		//Repaints the window (every frame)
 			window.repaint();
 		}
 	}
@@ -568,11 +568,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 		
 	}
+
 // -------------------------
 // ----- Player Inputs -----
 // -------------------------
 
-	//Keyboard Presses
+//Keyboard Presses
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -595,7 +596,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	}	
 
-	//Mouse Inputs
+//Mouse Inputs
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -619,13 +620,17 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
-
 	}
 
-	//UNUSED METHOD
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
+	
+//UNUSED METHOD
 	public void keyTyped(KeyEvent e) {}
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseClicked(MouseEvent arg0) {}
-	public void mouseDragged(MouseEvent e) {}
 }
