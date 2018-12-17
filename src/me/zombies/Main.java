@@ -1,5 +1,11 @@
 package me.zombies;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.awt.BasicStroke;		// <---- Imports	
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -42,11 +49,11 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	Font HPBarFont = new Font("Arial", Font.PLAIN, WIN/30);
 	Font ZombiesCounterFont = new Font("Arial", Font.BOLD, WIN/15);
 	BasicStroke stroke = new BasicStroke(WIN/300);
+	
+//Global Variables:
+	static PlayerStats Player1 = new PlayerStats("Josh");	// <---- Creating the Player Object
 
-	//Global Variables:
-	//static PlayerStats Player1 = new PlayerStats("Josh");	// <---- Creating the Player Object
-
-	//Variables for shooting
+//Variables for shooting
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();	// <---- Array list for bullets
 
 	//Constants for Zombie Types
@@ -59,8 +66,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	int Round = 5;
 	PlayerStats Player = new PlayerStats("Josh", Round);			// <---- Creating the Player Object
 
-	//when new round strats, create new player, pass name of player and current round
-	//Zombies
+//Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
 	int ZombiesCounter = 0;
 	Zombies z;
@@ -70,9 +76,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	int deltaY = mouseY-Player.y;
 
 	//Weapons
-	Weapon pistol = new Weapon(5, 7000, "Pistol");
+	Weapon pistol = new Weapon(5, 6, "Pistol");
 	int fire;
 	int magX, magY;
+	int ammo = pistol.ammo-fire;
+	static boolean R = false;
+	String str = null;
 
 	static int mouseX;	// <---- Mouse Variables
 	static int mouseY;
@@ -102,8 +111,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		window.pack();											// <---- Packs the Window
 		window.setVisible(true);								// <---- Sets it visable
 
-		Magazine();
-
 		timer = new Timer(tSpeed, new TimerListener());			// <---- Creates the Timer
 		timer.start();											// <---- Starts the Timer
 
@@ -113,7 +120,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	private class DrawingPanel extends JPanel {
 		DrawingPanel() {
 			this.setPreferredSize(new Dimension (WIN, WIN));	// <---- Sets the Size
-			this.setBackground(White);							// <---- Sets the background color
 		}
 
 		@Override
@@ -123,9 +129,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			super.paintComponent(g);
 			this.requestFocus();
-
-			drawMagazine(g);
-
+			
 			drawPlayer(g2);
 
 			addBullets(g);
@@ -134,7 +138,10 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			drawPlayerHealthBar(g, g2);
 
+			drawAmmoCounter(g, g2);
+
 			drawZombieCounter(g, g2);
+
 		}		
 	}
 
@@ -254,15 +261,22 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	//Guns
 	private void guns() {
-
-		int ammo = fire;
-
-		if(fire>0) {
-			if(ammo<pistol.ammo) {
-				bullets.add(new Bullet(Player));
-				ammo--;
-			} 	
+		
+		if(fire>=0) {
+			if(ammo>0) {
+				if(ammo<=pistol.ammo) {
+					bullets.add(new Bullet(Player));
+					ammo--;
+				} 	
+			}
 		}
+		
+		if(R) {
+			ammo = pistol.ammo;
+			R = false;
+			str = "0"+ammo;
+		}
+
 	}
 
 	//Draw Bullets
@@ -272,25 +286,18 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 	}
 
-	void Magazine() {
-		int magAmmo = pistol.ammo;
+	void drawAmmoCounter(Graphics g, Graphics2D g2) {
+		FontMetrics fontMetrics = g2.getFontMetrics(ZombiesCounterFont);
 
-		magX = (int)(Math.random()*WIN);
-		magY = (int)(Math.random()*WIN);
+		if (ammo<10) str = "0"+ammo;  	// <---- Puts a '0' in front of single-digit numers)
 
-		if(Player.x == magX) {
-			fire = fire - pistol.ammo;
-		}
+		g.setColor(Black);			
+		g2.setFont(ZombiesCounterFont);
 
+		g.drawString(str, WIN-WIN+10, WIN-10);
 	}
 
-	private void drawMagazine(Graphics g) {
-
-		g.setColor(Color.ORANGE);
-		g.fillRect(magX, magY, 5, 10);
-	}
-
-	//Draw the Zombie Counter
+//Draw the Zombie Counter
 	void drawZombieCounter(Graphics g, Graphics2D g2) {
 
 		FontMetrics fontMetrics = g2.getFontMetrics(ZombiesCounterFont);	// <---- Creates a FontMetrics
@@ -456,11 +463,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaY, deltaX))+90; 	// <---- The angle of rotation
 
-			//Rotation of Player
-			/*int zombieX = z.vx + z.vy; 									// <---- Subtracting the Player location from the Mouse Location
-			int zombieY = z.vx + z.vy;*/ 									// <---- Subtracting the Player location from the Mouse Location
-		//	Player.angle = Math.toDegrees(Math.atan2(zombieY, zombieX))+90; 	// <---- The angle of rotation
-
 			//Player Death Check
 			if (Player.HP<=0) Player.alive = false;
 
@@ -517,6 +519,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		if (e.getKeyCode()==KeyEvent.VK_A) A = true;
 		if (e.getKeyCode()==KeyEvent.VK_S) S = true;
 		if (e.getKeyCode()==KeyEvent.VK_D) D = true;	
+		if (e.getKeyCode()==KeyEvent.VK_R) R = true;
 
 	}
 
@@ -534,22 +537,20 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		
 		if (e.getButton()==MouseEvent.BUTTON1) {
-
+			
 			fire++;
 			guns();
 
 			M1 = true;
 		}
-
+		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
 		if (e.getButton()==MouseEvent.BUTTON1) M1 = false;
-
 	}
 
 	@Override
@@ -559,15 +560,15 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	}
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
-	}
-
 	//UNUSED METHOD
-	public void keyTyped(KeyEvent arg0) {}
+	public void keyTyped(KeyEvent e) {}
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseClicked(MouseEvent arg0) {}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 }
