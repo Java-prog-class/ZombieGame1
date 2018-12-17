@@ -162,6 +162,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 
 			Player.y+=vy; 	// <---- Moves the player in accordance with
 			Player.x+=vx;	//		 it's vertical and horizontal speeds
+			
 		}
 
 		//Moving Back:
@@ -207,8 +208,31 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 		//Building Collision:
 		for (Building b : fmt.buildings) 
 		{
-			if (player.intersects(b)) 
+			if (player.intersects(b))
 			{
+				//Horizontal Collision of the Building:
+				if (b.x < Player.x && Player.x > b.width)
+				{
+					if (b.y < Player.y && Player.y > b.height)
+					{
+						//Bottom Side of the Building:
+						if (W || S || A || D)
+						{
+							Player.y += 3;
+						}
+						
+					} else {
+						
+						//Top Side of the Building:
+						if (W || S || A || D)
+						{
+							Player.y -= 3;
+						}
+					}
+				}
+				
+				//Vertical Collision of the Building:
+				
 			}
 		}
 	}
@@ -271,7 +295,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	//Ammo:
 	void Magazine()
 	{
-		int magAmmo = pistol.ammo;
+		//int magAmmo = pistol.ammo;
 		
 		magX = (int)(Math.random() * WIN);
 		magY = (int)(Math.random() * WIN);
@@ -411,6 +435,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	}
 	
 	//Moving the Zombies:
+	@SuppressWarnings("unused")
 	private void moveZombies()
 	{
 		for (Zombies z : zombies)
@@ -523,7 +548,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener
 	}
 
 	//Mouse Inputs:
-	
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
