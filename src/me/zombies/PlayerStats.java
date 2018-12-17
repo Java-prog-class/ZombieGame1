@@ -8,7 +8,7 @@ class PlayerStats extends Rectangle {
 //Variables
 	
 	boolean alive;
-	
+	int currentWeapon = 0;
 	String armor, weapon, name;
 	
 	int HP, maxHP, speed;
