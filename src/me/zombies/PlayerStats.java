@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 class PlayerStats extends Rectangle {
 	
 //Variables
-	
 	boolean alive;
 	
 	String armor, weapon, name;
