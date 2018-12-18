@@ -12,7 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 @SuppressWarnings("serial")
-class Zombies extends Rectangle{
+class Zombies extends Rectangle {
 
 	//Colors
 	Color White = new Color (255, 255, 255);
