@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Main implements KeyListener, MouseListener, MouseMotionListener {
+@SuppressWarnings("serial")
+public class Main extends Rectangle implements KeyListener, MouseListener, MouseMotionListener{
 
 //JFrame and JWindow Creations
 	final static int WIN = 1500;
@@ -35,12 +37,23 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	Color White = new Color (255, 255, 255);
 	Color Blue = new Color (0, 0, 255);
 	Color Red = new Color (255, 0, 0);
+	Color Green = new Color(0, 255, 0);
 	Color Black = new Color (0, 0, 0);
 	Font HPBar = new Font("Arial", Font.PLAIN, WIN/30);
 	Font HPBarFont = new Font("Arial", Font.PLAIN, WIN/30);
 	Font ZombiesCounterFont = new Font("Arial", Font.BOLD, WIN/15);
 	Font GameOverFont = new Font("Arial", Font.BOLD, (int)(WIN/7.5));
+	Font CountdownFont = new Font("Arial", Font.BOLD, 500);
 	BasicStroke stroke = new BasicStroke(WIN/300);
+	
+//Variables for start button rectangle
+	int buttonWidth = (WIN/15)*6;
+	int buttonHeight = WIN/12;
+	int buttonX = (WIN/2)-(buttonWidth/2);
+	int buttonY = (WIN/5)*4-(buttonHeight/2);
+	boolean buttonHovering = false;
+	Color startButtonColor = Red;
+	Color startButtonTextColor = White;
 	
 //Variables for shooting
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();	// <---- Array list for bullets
@@ -55,6 +68,8 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	PlayerStats Player = new PlayerStats("Josh");			// <---- Creating the Player Object
 	int Score = 0;
 	int Round = 3;
+	int Countdown = 5;
+	long gameStartTime = 0L;
 	
 //Zombies
 	ArrayList<Zombies> zombies = new ArrayList<Zombies>();
@@ -73,22 +88,27 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 	static boolean R = false;
 	String str = null;
 
-	static int mouseX;	// <---- Mouse Variables
+//Mouse Variables	
+	static int mouseX;	
 	static int mouseY;
 
-	static boolean W = false,	// <---- Input variables for the player.
-				   A = false,	//		 These variables are set to false,
-				   S = false,	//       when the key is pressed or mouse
-				   D = false,	//		 button is clicked, the corresponding
-				  M1 = false,	//		 variable is set to true
+//Inputer variables for the Player
+	static boolean W = false,	// <---- These variables are set to false,
+				   A = false,	//		 when the key is pressed or mouse
+				   S = false,	//       button is clicked, the corresponding
+				   D = false,	//		  variable is set to true
+				  M1 = false,			
 				  M2 = false;
 
 	Timer gameTimer;	// <---- Initializes the Timers
 	Timer deathTimer;
+	Timer startScreenTimer;
 	int tSpeed = 1;		// <---- The Timer's Speed
 	
 	long lastHit = 0L, deathTime = 0L;
 	boolean showGameOverScreen = false;
+	boolean showStartScreen = true;
+	boolean showCountdown = false;
 
 	public static void main (String [] args) {new Main();}
 
@@ -106,13 +126,15 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 //		Magazine();
 		
-		gameTimer = new Timer(tSpeed, new GameTimerListener());		// <---- Creates the Main Game Timer
-		deathTimer = new Timer(tSpeed, new DeathTimerListener());	// <---- Creates the Death Timer
-		gameTimer.start();											// <---- Starts the Main Game Timer
+		gameTimer = new Timer(tSpeed, new GameTimerListener());					// <---- Creates the Main Game Timer
+		deathTimer = new Timer(tSpeed, new DeathTimerListener());				// <---- Creates the Death Timer
+		startScreenTimer = new Timer(tSpeed, new StartScreenTimerListener());	// <---- Creates the Start Screen Timer
+		
+		startScreenTimer.start();		// <---- Starts the Start Screen Timer
 
 	}
 
-	@SuppressWarnings("serial")
+//Drawing Panel
 	private class DrawingPanel extends JPanel {
 		DrawingPanel() {
 			this.setPreferredSize(new Dimension (WIN, WIN));	// <---- Sets the Size
@@ -125,16 +147,40 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 			super.paintComponent(g);
 			this.requestFocus();
+		
+			if (!showStartScreen) {
+//				drawMagazine(g);
+				drawPlayer(g2);
+				addBullets(g);
+				drawZombies(g, g2);
+				drawPlayerHealthBar(g, g2);
+				drawZombieCounter(g, g2);
+			}
 			
-//			drawMagazine(g);
-			drawPlayer(g2);
-			addBullets(g);
-			drawZombies(g, g2);
-			drawPlayerHealthBar(g, g2);
-			drawZombieCounter(g, g2);
+			if (showCountdown) {
+				String str;
+				if (Countdown == 0) {
+					str = "GO";
+				}
+				else str = ""+Countdown;
+				
+				FontMetrics fontMetrics = g2.getFontMetrics(CountdownFont);
+				int StringWidth = fontMetrics.stringWidth(str);
+				int StringX = (WIN/2)-(StringWidth/2);
+				int StringY = (WIN/2);
+				
+				g.setFont(CountdownFont);
+				g.setColor(Blue);
+				g.drawString(str, StringX, StringY);
+				
+			}
 			
 			if (!Player.alive) {
 				playerDied(g, g2);
+			}
+			
+			if (showStartScreen) {
+				drawStartScreen(g, g2);
 			}
 			
 			if (showGameOverScreen) {
@@ -142,7 +188,6 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			}
 		}		
 	}
-
 
 //Draw the Player
 	void drawPlayer(Graphics2D g2) {
@@ -431,6 +476,40 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		}
 	}
 
+//Start Screen
+	private void drawStartScreen(Graphics g, Graphics2D g2) {
+		
+	//Load the background image
+		BufferedImage BackgroundImg = null;
+		try { BackgroundImg = ImageIO.read(new File("Start Screen.png"));
+		} catch (IOException e) {}
+		g2.drawImage(BackgroundImg, 0, 0, WIN, WIN, drPanel);
+		
+	//Change the button colors according to the mouse position
+		if (buttonHovering) {
+			startButtonColor = Green;
+			startButtonTextColor = Black;
+		}
+		else {
+			startButtonColor = Blue;
+			startButtonTextColor = White;
+		}
+		
+	//Draw the Button Rectangle
+		g.setColor(startButtonColor);
+		g.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+		
+	//Draw the Button's Text
+		FontMetrics fontMetrics = g2.getFontMetrics(ZombiesCounterFont);
+		String ButtonMessage = "Start Game";
+		int stringX = (WIN/2)-(fontMetrics.stringWidth(ButtonMessage)/2);
+		int stringY = buttonY+fontMetrics.getAscent();
+		g2.setFont(ZombiesCounterFont);
+		g.setColor(startButtonTextColor);
+		g.drawString("Start Game", stringX, stringY);
+		
+	}
+
 //Death animation
 	private void playerDied(Graphics g, Graphics2D g2) {
 		FontMetrics fontMetrics = g2.getFontMetrics(GameOverFont);
@@ -474,30 +553,67 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 		g.drawString(str2, string2X, string2Y);
 	}
 	
-	
+//Start Screen Timer
+	private class StartScreenTimerListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		//Check for mouse over the button
+			if (mouseX>buttonX && 
+				mouseX<buttonX+buttonWidth && 
+				mouseY>buttonY &&
+				mouseY<buttonY+buttonHeight) {
+					buttonHovering = true;
+			}
+			else buttonHovering = false;
+			
+		//Check for Button Click
+			if (buttonHovering && M1) {
+				showStartScreen = false;
+				gameStartTime = System.currentTimeMillis();
+				showCountdown = true;
+			}
+		
+		//Game Countdown
+			if (!showStartScreen) {
+				if (System.currentTimeMillis()>=gameStartTime+1000) Countdown = 4;
+				if (System.currentTimeMillis()>=gameStartTime+2000) Countdown = 3;
+				if (System.currentTimeMillis()>=gameStartTime+3000) Countdown = 2;
+				if (System.currentTimeMillis()>=gameStartTime+4000) Countdown = 1;
+				if (System.currentTimeMillis()>=gameStartTime+5000) Countdown = 0;
+				if (System.currentTimeMillis()>=gameStartTime+6000) {
+					showCountdown = false;
+					gameTimer.start();
+					startScreenTimer.stop();
+				}
+			}
+			
+
+			window.repaint();
+		}
+	}
+
 //Game Timer
 	private class GameTimerListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			// ------------------------------------------------------		
-			// ----- Stuff that happens every frame of the game -----
-			// ------------------------------------------------------
+		// ------------------------------------------------------		
+		// ----- Stuff that happens every frame of the game -----
+		// ------------------------------------------------------
 
-			//Fixes the Player's Health Bar
+		//Fixes the Player's Health Bar
 			Player.PercentRatio = ((Player.HP*100)/Player.maxHP);
 			Player.PercentHP = Player.PercentRatio/100;
 
-			//Fixes the Zombies' Health Bar
+		//Fixes the Zombies' Health Bar
 			for (Zombies z: zombies) {
 				z.PercentRatio = ((z.HP*100)/z.maxHP);
 				z.PercentHP = z.PercentRatio/100;
 			}
 
 			movePlayer();
-
 			moveZombies();
-
 			moveBullets();
 
 		//Rotation of Player
@@ -505,6 +621,12 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 			int deltaY = mouseY-Player.y;
 			Player.angle = Math.toDegrees(Math.atan2(deltaY, deltaX))+90; 	// <---- The angle of rotation
 		
+		//Check for shooting
+			if (M1) {
+				fire++;
+				guns();
+			}
+			
 		//Player Death Check
 			if (Player.HP<=0) {
 				Player.alive = false;
@@ -600,15 +722,7 @@ public class Main implements KeyListener, MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
-		if (e.getButton()==MouseEvent.BUTTON1) {
-			
-			fire++;
-			guns();
-
-			M1 = true;
-		}
-		
+		if (e.getButton()==MouseEvent.BUTTON1) M1 = true;
 	}
 
 	@Override
